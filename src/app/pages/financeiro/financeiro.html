@@ -1,0 +1,776 @@
+
+<!-- ==========================================================================
+     PÁGINA FINANCEIRO - LETÍCIA GOMES FOTOGRAFIA
+     ========================================================================== -->
+
+<div class="admin-layout">
+
+  <!-- MENU LATERAL (Sidebar retrátil) -->
+  <aside class="sidebar" [class.open]="menuAberto">
+
+    <a routerLink="/admin" class="brand" (click)="fecharMenu()">
+      <img
+        src="/imagens/logoleticia.png"
+        alt="Letícia Gomes Fotografia"
+        class="brand-logo-img"
+      >
+      <span>
+        <strong>Letícia Gomes</strong>
+        <small>PAINEL ADMINISTRATIVO</small>
+      </span>
+    </a>
+
+    <div class="menu-label">MENU PRINCIPAL</div>
+
+    <nav class="navigation">
+
+      <a routerLink="/admin" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">⌂</span>
+        <span>01. Início</span>
+      </a>
+
+      <a routerLink="/solicitacoes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▤</span>
+        <span>02. Solicitações</span>
+      </a>
+
+      <a routerLink="/clientes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">♙</span>
+        <span>03. Clientes</span>
+      </a>
+
+      <a routerLink="/agenda" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▦</span>
+        <span>04. Agenda</span>
+      </a>
+
+      <a routerLink="/entregas" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▧</span>
+        <span>05. Entregas</span>
+      </a>
+
+      <a routerLink="/financeiro" class="nav-link active" (click)="fecharMenu()">
+        <span class="nav-icon">R$</span>
+        <span>06. Financeiro</span>
+      </a>
+
+      <a routerLink="/editor-site" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">✎</span>
+        <span>07. Editar site</span>
+      </a>
+
+      <a routerLink="/configuracoes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">⚙</span>
+        <span>08. Configurações</span>
+      </a>
+
+    </nav>
+
+    <!-- PERFIL E BOTÃO DE SAIR -->
+    <div class="sidebar-bottom">
+      <div class="profile">
+        <div class="profile-avatar">LG</div>
+        <div>
+          <strong>Letícia Gomes</strong>
+          <small>Administradora</small>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="logout-button"
+        (click)="sair()"
+      >
+        ↗ Sair do painel
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- OVERLAY PARA FECHAR O MENU -->
+  <div
+    class="mobile-overlay"
+    [class.hidden]="!menuAberto"
+    (click)="fecharMenu()"
+  ></div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+      <button
+        class="menu-button"
+        type="button"
+        aria-label="Abrir menu"
+        [attr.aria-expanded]="menuAberto"
+        (click)="alternarMenu()"
+      >
+        ☰
+      </button>
+
+      <div class="breadcrumb">
+        Painel administrativo <span>/</span> Financeiro
+      </div>
+
+      <a routerLink="/home" class="view-site">
+        ↗ Ver site
+      </a>
+
+    </header>
+
+    <div class="page-content">
+
+      <!-- CABEÇALHO DA PÁGINA -->
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">GESTÃO FOTOGRÁFICA</p>
+          <h1>Financeiro</h1>
+          <p class="page-description">
+            Receitas, despesas e controle do fluxo de caixa.
+          </p>
+        </div>
+
+        <button
+          class="primary-button"
+          type="button"
+          (click)="novoLancamento()"
+        >
+          <span>+</span> Novo lançamento
+        </button>
+      </section>
+
+      <!-- BARRA DE SELEÇÃO DE MÊS / AÇÕES -->
+      <section class="panel month-toolbar">
+
+        <div class="toolbar-group">
+          <label for="monthFilter">
+            Período de consulta
+          </label>
+
+          <input
+            id="monthFilter"
+            type="month"
+            [(ngModel)]="mesSelecionado"
+            (ngModelChange)="atualizarFinanceiro()"
+          >
+        </div>
+
+        <div class="toolbar-actions">
+
+          <button
+            class="secondary-button"
+            type="button"
+            (click)="selecionarMesAtual()"
+          >
+            Mês atual
+          </button>
+
+          <button
+            class="secondary-button"
+            type="button"
+            (click)="exportarCSV()"
+          >
+            Exportar relatório CSV
+          </button>
+
+        </div>
+
+      </section>
+
+      <!-- CARDS DE INDICADORES -->
+      <section class="summary-grid">
+
+        <!-- RECEITAS RECEBIDAS -->
+        <article class="summary-card">
+          <div class="summary-top">
+            <span class="summary-label">
+              Receitas recebidas
+            </span>
+            <span class="summary-symbol income-symbol">↗</span>
+          </div>
+
+          <strong>{{ formatarMoeda(receitasRecebidas) }}</strong>
+          <small>Valores efetivamente recebidos no período</small>
+        </article>
+
+        <!-- DESPESAS PAGAS -->
+        <article class="summary-card">
+          <div class="summary-top">
+            <span class="summary-label">
+              Despesas pagas
+            </span>
+            <span class="summary-symbol expense-symbol">↙</span>
+          </div>
+
+          <strong>{{ formatarMoeda(despesasPagas) }}</strong>
+          <small>Valores efetivamente pagos no período</small>
+        </article>
+
+        <!-- SALDO DO PERÍODO -->
+        <article class="summary-card">
+          <div class="summary-top">
+            <span class="summary-label">
+              Saldo do período
+            </span>
+            <span class="summary-symbol balance-symbol">＝</span>
+          </div>
+
+          <strong>{{ formatarMoeda(saldoPeriodo) }}</strong>
+          <small>Receitas recebidas menos despesas pagas</small>
+        </article>
+
+        <!-- PAGAMENTOS PENDENTES -->
+        <article class="summary-card">
+          <div class="summary-top">
+            <span class="summary-label">
+              Pagamentos pendentes
+            </span>
+            <span class="summary-symbol pending-symbol">◷</span>
+          </div>
+
+          <strong>{{ formatarMoeda(saldoPendente) }}</strong>
+          <small>
+            Valores aguardando recebimento ou pagamento
+          </small>
+        </article>
+
+      </section>
+
+      <!-- RELATÓRIO DE ENTRADAS E SAÍDAS -->
+      <section class="report-grid">
+
+        <!-- RECEITAS DO PERÍODO -->
+        <article class="panel report-card">
+
+          <div class="report-heading">
+            <div>
+              <span class="eyebrow">ENTRADAS</span>
+              <h2>Receitas do período</h2>
+            </div>
+
+            <span class="report-count">
+              {{ quantidadeReceitas }}
+              {{ quantidadeReceitas === 1 ? 'lançamento' : 'lançamentos' }}
+            </span>
+          </div>
+
+          <div class="report-line">
+            <span>Recebidas</span>
+            <strong>{{ formatarMoeda(receitasRecebidas) }}</strong>
+          </div>
+
+          <div class="report-line">
+            <span>A receber</span>
+            <strong>{{ formatarMoeda(receitasPendentes) }}</strong>
+          </div>
+
+        </article>
+
+        <!-- DESPESAS DO PERÍODO -->
+        <article class="panel report-card">
+
+          <div class="report-heading">
+            <div>
+              <span class="eyebrow">SAÍDAS</span>
+              <h2>Despesas do período</h2>
+            </div>
+
+            <span class="report-count">
+              {{ quantidadeDespesas }}
+              {{ quantidadeDespesas === 1 ? 'lançamento' : 'lançamentos' }}
+            </span>
+          </div>
+
+          <div class="report-line">
+            <span>Pagas</span>
+            <strong>{{ formatarMoeda(despesasPagas) }}</strong>
+          </div>
+
+          <div class="report-line">
+            <span>A pagar</span>
+            <strong>{{ formatarMoeda(despesasPendentes) }}</strong>
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- HISTÓRICO DE LANÇAMENTOS -->
+      <section class="panel">
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">MOVIMENTAÇÕES</p>
+            <h2>Histórico de lançamentos</h2>
+          </div>
+
+          <span class="result-count">
+            {{ lancamentosFiltrados.length }}
+            {{ lancamentosFiltrados.length === 1 ? 'lançamento' : 'lançamentos' }}
+          </span>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="filters">
+
+          <div class="search-field">
+            <span>⌕</span>
+
+            <input
+              type="search"
+              placeholder="Descrição, cliente ou categoria..."
+              [(ngModel)]="busca"
+              (ngModelChange)="filtrarLancamentos()"
+            >
+          </div>
+
+          <select
+            aria-label="Filtrar por tipo"
+            [(ngModel)]="filtroTipo"
+            (ngModelChange)="filtrarLancamentos()"
+          >
+            <option value="">Receitas e despesas</option>
+            <option value="Receita">Receitas</option>
+            <option value="Despesa">Despesas</option>
+          </select>
+
+          <select
+            aria-label="Filtrar por situação"
+            [(ngModel)]="filtroSituacao"
+            (ngModelChange)="filtrarLancamentos()"
+          >
+            <option value="">Todas as situações</option>
+            <option value="Pago">Pago / recebido</option>
+            <option value="Pendente">Pendente</option>
+          </select>
+
+          <button
+            class="text-link"
+            type="button"
+            (click)="limparFiltros()"
+          >
+            Limpar filtros
+          </button>
+
+        </div>
+
+        <!-- TABELA DE LANÇAMENTOS -->
+        <div class="table-wrapper">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Data</th>
+                <th>Categoria</th>
+                <th>Cliente / Ensaio</th>
+                <th>Tipo</th>
+                <th>Situação</th>
+                <th>Valor</th>
+                <th style="text-align: right;">Ações</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              @for (lancamento of lancamentosFiltrados; track lancamento.id) {
+                <tr>
+
+                  <td>
+                    <strong>{{ lancamento.description }}</strong>
+                    <br>
+                    <small style="color: #777;">
+                      {{ lancamento.method || 'Sem forma pgto' }}
+                    </small>
+                  </td>
+
+                  <td>
+                    {{ formatarData(lancamento.date) }}
+                  </td>
+
+                  <td>
+                    {{ lancamento.category }}
+                  </td>
+
+                  <td>
+                    {{
+                      lancamento.clientName ||
+                      lancamento.deliveryTitle ||
+                      '-'
+                    }}
+                  </td>
+
+                  <td>
+                    <span
+                      class="badge-type"
+                      [class.receita]="lancamento.type === 'Receita'"
+                      [class.despesa]="lancamento.type === 'Despesa'"
+                    >
+                      {{ lancamento.type }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span
+                      class="status-badge"
+                      [class.pago]="lancamento.status === 'Pago'"
+                      [class.pendente]="lancamento.status !== 'Pago'"
+                    >
+                      {{ lancamento.status }}
+                    </span>
+                  </td>
+
+                  <td
+                    [class.amount-income]="lancamento.type === 'Receita'"
+                    [class.amount-expense]="lancamento.type === 'Despesa'"
+                  >
+                    {{ lancamento.type === 'Receita' ? '+' : '-' }}
+                    {{ formatarMoeda(lancamento.amount) }}
+                  </td>
+
+                  <td style="text-align: right;">
+
+                    <button
+                      type="button"
+                      class="icon-button"
+                      title="Editar"
+                      (click)="editarLancamento(lancamento)"
+                    >
+                      ✎
+                    </button>
+
+                    <button
+                      type="button"
+                      class="icon-button"
+                      title="Excluir"
+                      (click)="excluirLancamento(lancamento.id)"
+                    >
+                      ×
+                    </button>
+
+                  </td>
+
+                </tr>
+              }
+
+            </tbody>
+          </table>
+
+        </div>
+
+        <!-- ESTADO VAZIO -->
+        @if (lancamentosFiltrados.length === 0) {
+          <div class="empty-state">
+
+            <span>R$</span>
+
+            <h3>Nenhum lançamento encontrado</h3>
+
+            <p>
+              Cadastre sua primeira receita ou despesa
+              para acompanhar o caixa.
+            </p>
+
+            <button
+              class="secondary-button"
+              type="button"
+              style="margin-top: 15px;"
+              (click)="novoLancamento()"
+            >
+              Cadastrar lançamento
+            </button>
+
+          </div>
+        }
+
+        <!-- TOTAL DOS LANÇAMENTOS FILTRADOS -->
+        <footer class="table-footer">
+          <span>Total dos lançamentos filtrados</span>
+          <strong>{{ formatarMoeda(totalFiltrado) }}</strong>
+        </footer>
+
+      </section>
+
+      <!-- AVISO DE CONTROLE MANUAL -->
+      <p
+        class="demo-notice"
+        style="background: none; border: 1px dashed rgba(73, 11, 12, 0.2);"
+      >
+        <span>ⓘ</span>
+        <strong>Controle manual:</strong>
+        os valores são informados pela administradora.
+        O saldo considera apenas receitas recebidas e despesas pagas;
+        valores pendentes são apresentados separadamente.
+      </p>
+
+      <!-- RODAPÉ DA PÁGINA -->
+      <footer class="page-footer">
+        <span>
+          © {{ anoAtual }} Letícia Gomes Fotografia
+        </span>
+
+        <span>Gestão financeira transparente e organizada.</span>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==========================================================================
+     MODAL DE CADASTRO E EDIÇÃO
+     ========================================================================== -->
+
+<div
+  class="modal-backdrop"
+  [class.hidden]="!modalAberto"
+>
+  <section
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+  >
+
+    <!-- CABEÇALHO DO MODAL -->
+    <div class="modal-header">
+
+      <div>
+        <p class="eyebrow">CONTROLE FINANCEIRO</p>
+
+        <h2 id="modalTitle">
+          {{ editando ? 'Editar lançamento' : 'Novo lançamento' }}
+        </h2>
+      </div>
+
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Fechar"
+        (click)="fecharModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <form (ngSubmit)="salvarLancamento()">
+
+      <div class="form-grid">
+
+        <!-- TIPO DE LANÇAMENTO -->
+        <label>
+          Tipo de lançamento *
+
+          <select
+            name="tipo"
+            required
+            [(ngModel)]="formLancamento.type"
+          >
+            <option value="Receita">Receita</option>
+            <option value="Despesa">Despesa</option>
+          </select>
+        </label>
+
+        <!-- SITUAÇÃO -->
+        <label>
+          Situação *
+
+          <select
+            name="situacao"
+            required
+            [(ngModel)]="formLancamento.status"
+          >
+            <option value="Pendente">Pendente</option>
+            <option value="Pago">Pago / recebido</option>
+          </select>
+        </label>
+
+        <!-- DESCRIÇÃO -->
+        <label class="full-width">
+          Descrição *
+
+          <input
+            type="text"
+            name="descricao"
+            maxlength="140"
+            required
+            placeholder="Ex.: Ensaio fotográfico de família"
+            [(ngModel)]="formLancamento.description"
+          >
+        </label>
+
+        <!-- VALOR -->
+        <label>
+          Valor total (R$) *
+
+          <input
+            type="number"
+            name="valor"
+            min="0.01"
+            max="999999999"
+            step="0.01"
+            required
+            placeholder="0,00"
+            [(ngModel)]="formLancamento.amount"
+          >
+        </label>
+
+        <!-- DATA DO LANÇAMENTO -->
+        <label>
+          Data do lançamento *
+
+          <input
+            type="date"
+            name="data"
+            required
+            [(ngModel)]="formLancamento.date"
+          >
+        </label>
+
+        <!-- VENCIMENTO -->
+        <label>
+          Vencimento
+
+          <input
+            type="date"
+            name="vencimento"
+            [(ngModel)]="formLancamento.dueDate"
+          >
+        </label>
+
+        <!-- DATA DO PAGAMENTO -->
+        <label>
+          Data do pagamento/recebimento
+
+          <input
+            type="date"
+            name="dataPagamento"
+            [(ngModel)]="formLancamento.paidDate"
+          >
+        </label>
+
+        <!-- CATEGORIA -->
+        <label>
+          Categoria *
+
+          <select
+            name="categoria"
+            required
+            [(ngModel)]="formLancamento.category"
+          >
+            <option value="Ensaio fotográfico">Ensaio fotográfico</option>
+            <option value="Casamento e eventos">Casamento e eventos</option>
+            <option value="Impressões e álbuns">Impressões e álbuns</option>
+            <option value="Sinal / entrada">Sinal / entrada</option>
+            <option value="Equipamentos">Equipamentos</option>
+            <option value="Softwares e assinaturas">Softwares e assinaturas</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Impostos e taxas">Impostos e taxas</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </label>
+
+        <!-- FORMA DE PAGAMENTO -->
+        <label>
+          Forma de pagamento
+
+          <select
+            name="formaPagamento"
+            [(ngModel)]="formLancamento.method"
+          >
+            <option value="">Não informada</option>
+            <option value="Pix">Pix</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
+            <option value="Transferência bancária">Transferência bancária</option>
+            <option value="Boleto">Boleto</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </label>
+
+        <!-- CLIENTE RELACIONADO -->
+        <label>
+          Cliente relacionado
+
+          <select
+            name="cliente"
+            [(ngModel)]="formLancamento.clientId"
+          >
+            <option value="">Sem cliente associado</option>
+
+            @for (cliente of clientes; track cliente.id) {
+              <option [value]="cliente.id">
+                {{ cliente.name }}
+              </option>
+            }
+          </select>
+        </label>
+
+        <!-- ENSAIO / TRABALHO RELACIONADO -->
+        <label>
+          Ensaio / trabalho relacionado
+
+          <select
+            name="trabalho"
+            [(ngModel)]="formLancamento.deliveryId"
+          >
+            <option value="">Sem trabalho associado</option>
+
+            @for (trabalho of trabalhos; track trabalho.id) {
+              <option [value]="trabalho.id">
+                {{ trabalho.title }}
+              </option>
+            }
+          </select>
+        </label>
+
+        <!-- OBSERVAÇÕES -->
+        <label class="full-width">
+          Observações
+
+          <textarea
+            name="observacoes"
+            rows="3"
+            placeholder="Detalhes do lançamento, parcelamento ou referência..."
+            [(ngModel)]="formLancamento.notes"
+          ></textarea>
+        </label>
+
+      </div>
+
+      <!-- MENSAGEM DE ERRO -->
+      @if (erroFormulario) {
+        <p class="form-error" role="alert">
+          {{ erroFormulario }}
+        </p>
+      }
+
+      <!-- BOTÕES DO MODAL -->
+      <div class="modal-actions">
+
+        <button
+          class="secondary-button"
+          type="button"
+          (click)="fecharModal()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          class="primary-button"
+          type="submit"
+        >
+          Salvar lançamento
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+</div>

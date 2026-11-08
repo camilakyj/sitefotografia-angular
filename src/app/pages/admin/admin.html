@@ -1,0 +1,186 @@
+
+<div class="admin-layout">
+
+    <!-- MENU LATERAL (Sidebar retrátil) -->
+    <aside class="sidebar" id="sidebar" [class.open]="menuAberto">
+
+        <a routerLink="/admin" class="brand">
+            <img src="/imagens/logoleticia.png" alt="Letícia Gomes Fotografia" class="brand-logo-img">
+            <span>
+                <strong>Letícia Gomes</strong>
+                <small>PAINEL ADMINISTRATIVO</small>
+            </span>
+        </a>
+
+        <div class="menu-label">MENU PRINCIPAL</div>
+
+        <nav class="navigation">
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+                <span class="nav-icon">⌂</span><span>01. Início</span>
+            </a>
+
+            <a routerLink="/solicitacoes" routerLinkActive="active" class="nav-link">
+                <span class="nav-icon">▤</span><span>02. Solicitações</span>
+            </a>
+
+            <a routerLink="/clientes" routerLinkActive="active" class="nav-link">
+                <span class="nav-icon">♙</span><span>03. Clientes</span>
+            </a>
+
+            <a routerLink="/agenda" routerLinkActive="active" class="nav-link">
+                <span class="nav-icon">▦</span><span>04. Agenda</span>
+            </a>
+
+            <a routerLink="/entregas" routerLinkActive="active" class="nav-link">
+                <span class="nav-icon">▧</span><span>05. Entregas</span>
+            </a>
+
+            <a routerLink="/financeiro" routerLinkActive="active" class="nav-link">
+                <span class="nav-icon">R$</span><span>06. Financeiro</span>
+            </a>
+
+            <a routerLink="/editor-site" routerLinkActive="active" class="nav-link">
+                <span class="nav-icon">✎</span><span>07. Editar site</span>
+            </a>
+
+            <a routerLink="/configuracoes" routerLinkActive="active" class="nav-link">
+                <span class="nav-icon">⚙</span><span>08. Configurações</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="profile">
+                <div class="profile-avatar">LG</div>
+                <div>
+                    <strong>Letícia Gomes</strong>
+                    <small>Administradora</small>
+                </div>
+            </div>
+
+            <button type="button" (click)="sair()" class="logout-button">
+                ↗ Sair do painel
+            </button>
+        </div>
+    </aside>
+
+    <!-- Overlay escuro para fechar o menu ao clicar fora -->
+    <div
+        class="mobile-overlay"
+        [class.hidden]="!menuAberto"
+        (click)="alternarMenu()">
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <button
+                class="menu-button"
+                type="button"
+                (click)="alternarMenu()"
+                aria-label="Abrir menu"
+                [attr.aria-expanded]="menuAberto">
+                ☰
+            </button>
+
+            <div class="breadcrumb">
+                Painel administrativo <span>/</span> Início
+            </div>
+
+            <a routerLink="/home" class="view-site">↗ Ver site</a>
+        </header>
+
+        <div class="page-content">
+
+            <!-- CABEÇALHO DA PÁGINA -->
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow">VISÃO GERAL DO NEGÓCIO</p>
+                    <h1>Olá, Letícia</h1>
+                    <p class="page-description">
+                        Aqui está o resumo das suas atividades e atalhos rápidos do estúdio.
+                    </p>
+                </div>
+            </section>
+
+            <!-- CARDS DE INDICADORES / RESUMO -->
+            <section class="summary-grid">
+
+                <article class="summary-card">
+                    <span>Novas solicitações</span>
+                    <strong>{{ novasSolicitacoes }}</strong>
+                    <small>Aguardando retorno</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Ensaios confirmados</span>
+                    <strong>{{ ensaiosConfirmados }}</strong>
+                    <small>Na agenda</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Entregas pendentes</span>
+                    <strong>{{ entregasPendentes }}</strong>
+                    <small>Galerias em aberto</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Receitas do mês</span>
+                    <strong>{{ receitas }}</strong>
+                    <small>Balanço atual</small>
+                </article>
+
+            </section>
+
+            <!-- SEÇÃO DE ATALHOS / TAREFAS -->
+            <div class="admin-grid-sections">
+
+                <section class="panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">ORGANIZAÇÃO</p>
+                            <h2>Atalhos rápidos</h2>
+                        </div>
+                    </div>
+
+                    <div class="shortcuts-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+                        <a routerLink="/solicitacoes" class="secondary-button" style="text-align: center; text-decoration: none;">
+                            Ver novas solicitações
+                        </a>
+
+                        <a routerLink="/clientes" class="secondary-button" style="text-align: center; text-decoration: none;">
+                            Gerenciar base de clientes
+                        </a>
+
+                        <a routerLink="/agenda" class="secondary-button" style="text-align: center; text-decoration: none;">
+                            Consultar agenda de ensaios
+                        </a>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">SISTEMA</p>
+                            <h2>Status do painel</h2>
+                        </div>
+                    </div>
+
+                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6; margin-top: 15px;">
+                        Os dados cadastrados estão sincronizados com o armazenamento local do seu navegador
+                        (<code style="background: #EFEBE9; padding: 2px 6px; border-radius: 4px;">localStorage</code>).
+                        Utilize o menu lateral para navegar entre as seções de gerenciamento.
+                    </p>
+                </section>
+
+            </div>
+
+            <footer class="page-footer">
+                <span>© {{ anoAtual }} Letícia Gomes Fotografia</span>
+                <span>Visão geral com carinho e precisão.</span>
+            </footer>
+
+        </div>
+    </main>
+</div>

@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+/* Fonte principal do site */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Configurações globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #F7F7F7;
+    font-family: 'Poppins', sans-serif;
+    color: #333333;
+}

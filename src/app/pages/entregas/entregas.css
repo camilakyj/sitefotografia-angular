@@ -1,0 +1,738 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   ESTILOS DA PÁGINA DE ENTREGAS - LETÍCIA GOMES FOTOGRAFIA
+   ========================================================================== */
+
+/* Define o modelo de caixa como border-box e zera margens e preenchimentos para todos os elementos */
+:host, :host * {
+  box-sizing: border-box; /* Inclui padding e borda no cálculo da largura e altura total dos elementos */
+  margin: 0; /* Remove a margem padrão de todos os elementos */
+  padding: 0; /* Remove o preenchimento padrão de todos os elementos */
+}
+
+/* Estilizações globais aplicadas ao corpo da página */
+:host {
+  display: block; /* Faz o componente Angular ocupar sua própria área */
+  background-color: #F7F7F7; /* Define a cor de fundo cinza clara da página */
+  font-family: 'Poppins', sans-serif; /* Define a fonte principal como 'Poppins' com fallback para sans-serif */
+  color: #333333; /* Define a cor padrão do texto como cinza escuro */
+  min-height: 100vh; /* Garante que o corpo ocupe no mínimo 100% da altura da janela de visualização */
+}
+
+/* Layout principal estruturado com Flexbox para o painel administrativo */
+.admin-layout {
+  display: flex; /* Organiza os elementos filhos em linha usando flexbox */
+  min-height: 100vh; /* Define a altura mínima do layout como 100% da altura da tela */
+}
+
+/* ==========================================================================
+   MENU LATERAL RETRÁTIL
+   ========================================================================== */
+/* Estilização da barra lateral de navegação */
+.sidebar {
+  width: 280px; /* Define a largura fixa da barra lateral */
+  background-color: #F7F7F7; /* Define a cor de fundo da barra lateral */
+  border-right: 1px solid rgba(0, 0, 0, 0.06); /* Adiciona uma borda sutil à direita */
+  display: flex; /* Organiza os elementos internos em coluna */
+  flex-direction: column; /* Define a direção do flexbox como vertical */
+  position: fixed; /* Fixa a barra lateral na tela */
+  top: 0; /* Alinha o topo da barra ao topo da janela */
+  bottom: 0; /* Alinha a base da barra à base da janela */
+  left: 0; /* Alinha a barra à extremidade esquerda da tela */
+  z-index: 100; /* Define a ordem de empilhamento para ficar acima de outros elementos */
+  transform: translateX(-100%); /* Desloca a barra totalmente para fora da tela à esquerda por padrão */
+  transition: transform 0.3s ease; /* Adiciona animação suave ao mover a barra lateral */
+}
+
+/* Estado da barra lateral quando aberta */
+.sidebar.open {
+  transform: translateX(0); /* Retorna a barra lateral para a posição visível na tela */
+}
+
+/* Seção da marca/logotipo na barra lateral */
+.brand {
+  display: flex; /* Organiza os elementos da marca em linha */
+  align-items: center; /* Alinha verticalmente os itens ao centro */
+  gap: 15px; /* Define o espaçamento entre o logotipo e os textos */
+  padding: 32px 24px; /* Adiciona preenchimento interno ao redor da marca */
+  text-decoration: none; /* Remove o sublinhado padrão do link */
+  color: #333333; /* Define a cor do texto da marca */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04); /* Adiciona uma linha divisória sutil abaixo */
+}
+
+/* Imagem do logotipo da marca */
+.brand-logo-img {
+  max-width: 100px; /* Limita a largura máxima da imagem do logotipo */
+  height: auto; /* Mantém a proporção original da altura */
+  display: block; /* Exibe a imagem como bloco */
+}
+
+/* Título em negrito dentro da marca */
+.brand strong {
+  display: block; /* Exibe o elemento como bloco */
+  font-size: 0.95rem; /* Define o tamanho da fonte */
+  color: #490B0C; /* Define a cor do texto em tom de vinho */
+}
+
+/* Subtítulo ou slogan pequeno dentro da marca */
+.brand small {
+  font-size: 0.65rem; /* Define o tamanho pequeno da fonte */
+  letter-spacing: 1.5px; /* Adiciona espaçamento entre as letras */
+  color: #6E859C; /* Define a cor cinza-azulado do texto */
+}
+
+/* Rótulo separador das seções do menu */
+.menu-label {
+  font-size: 0.72rem; /* Define o tamanho da fonte do rótulo */
+  letter-spacing: 2px; /* Adiciona espaçamento largo entre as letras */
+  color: #888888; /* Define a cor cinza do texto */
+  padding: 30px 24px 14px 24px; /* Define o espaçamento interno ao redor do rótulo */
+  font-weight: 600; /* Torna a fonte semi-negrito */
+}
+
+/* Container de navegação do menu */
+.navigation {
+  display: flex; /* Organiza os links de navegação em coluna */
+  flex-direction: column; /* Define a direção vertical para os links */
+  gap: 8px; /* Define o espaçamento entre cada link do menu */
+  padding: 0 16px; /* Adiciona preenchimento lateral nas extremidades */
+  flex: 1; /* Permite que o container ocupe o espaço disponível */
+  overflow-y: auto; /* Adiciona barra de rolagem vertical se o conteúdo exceder a altura */
+}
+
+/* Estilo individual para cada link de navegação */
+.nav-link {
+  display: flex; /* Organiza o ícone e o texto do link em linha */
+  align-items: center; /* Alinha os itens verticalmente ao centro */
+  gap: 16px; /* Define o espaçamento entre o ícone e o texto */
+  padding: 16px 18px; /* Define o preenchimento interno do link */
+  text-decoration: none; /* Remove o sublinhado padrão do link */
+  color: #555555; /* Define a cor cinza do texto do link */
+  font-size: 0.92rem; /* Define o tamanho da fonte */
+  border-radius: 14px; /* Arredonda as bordas do link */
+  transition: background-color 0.2s ease, color 0.2s ease; /* Adiciona transição suave para cor e fundo */
+}
+
+/* Efeito ao passar o mouse sobre o link de navegação */
+.nav-link:hover {
+  background-color: rgba(73, 11, 12, 0.04); /* Aplica um fundo translúcido em tom de vinho */
+  color: #490B0C; /* Altera a cor do texto para vinho */
+}
+
+/* Estado ativo do link de navegação (página atual) */
+.nav-link.active {
+  background-color: #490B0C; /* Define o fundo sólido em tom de vinho */
+  color: #FFFFFF; /* Define a cor do texto como branco */
+  font-weight: 500; /* Torna a fonte ligeiramente mais espessa */
+}
+
+/* Ícone dentro do link de navegação */
+.nav-icon {
+  font-size: 1.1rem; /* Define o tamanho do ícone */
+  width: 22px; /* Define uma largura fixa para alinhar os textos à direita */
+  text-align: center; /* Centraliza o ícone no espaço reservado */
+}
+
+/* Rodapé da barra lateral (perfil e botão de sair) */
+.sidebar-bottom {
+  padding: 24px; /* Adiciona preenchimento interno ao redor do rodapé da barra */
+  border-top: 1px solid rgba(0, 0, 0, 0.04); /* Adiciona linha divisória sutil acima */
+  display: flex; /* Organiza os elementos internos em coluna */
+  flex-direction: column; /* Define a direção vertical */
+  gap: 18px; /* Define o espaçamento entre o perfil e o botão */
+}
+
+/* Seção de informações do perfil do usuário */
+.profile {
+  display: flex; /* Organiza o avatar e os textos do perfil em linha */
+  align-items: center; /* Alinha os itens verticalmente ao centro */
+  gap: 14px; /* Define o espaçamento entre o avatar e os textos */
+}
+
+/* Círculo do avatar do perfil */
+.profile-avatar {
+  width: 42px; /* Define a largura do avatar */
+  height: 42px; /* Define a altura do avatar */
+  background-color: #EFEBE9; /* Define a cor de fundo bege clara do avatar */
+  color: #490B0C; /* Define a cor do texto/iniciais em tom de vinho */
+  border-radius: 50%; /* Torna o avatar perfeitamente circular */
+  display: flex; /* Utiliza flexbox para centralizar as iniciais */
+  align-items: center; /* Centraliza verticalmente o conteúdo */
+  justify-content: center; /* Centraliza horizontalmente o conteúdo */
+  font-weight: 600; /* Torna a fonte semi-negrito */
+  font-size: 0.9rem; /* Define o tamanho da fonte das iniciais */
+}
+
+/* Nome do usuário em negrito no perfil */
+.profile strong {
+  display: block; /* Exibe o nome como bloco */
+  font-size: 0.9rem; /* Define o tamanho da fonte */
+  color: #333333; /* Define a cor escura do texto */
+}
+
+/* Cargo ou email menor no perfil */
+.profile small {
+  font-size: 0.75rem; /* Define o tamanho pequeno da fonte */
+  color: #6E859C; /* Define a cor cinza-azulado do texto */
+}
+
+/* Botão de encerramento de sessão (Logout) */
+.logout-button {
+  width: 100%; /* Ocupa toda a largura disponível do container */
+  padding: 14px; /* Define o preenchimento interno do botão */
+  background-color: transparent; /* Deixa o fundo transparente */
+  border: 1px solid rgba(73, 11, 12, 0.2); /* Adiciona uma borda fina em tom de vinho */
+  color: #490B0C; /* Define a cor do texto como vinho */
+  border-radius: 12px; /* Arredonda as bordas do botão */
+  font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+  font-size: 0.88rem; /* Define o tamanho da fonte */
+  font-weight: 500; /* Torna a fonte semi-negrito */
+  cursor: pointer; /* Altera o cursor do mouse para indicar interatividade */
+  transition: background-color 0.2s ease; /* Adiciona transição suave para o fundo */
+}
+
+/* Efeito ao passar o mouse sobre o botão de sair */
+.logout-button:hover {
+  background-color: rgba(73, 11, 12, 0.05); /* Aplica um fundo translúcido suave ao passar o mouse */
+}
+
+/* Overlay escuro de fundo para dispositivos móveis */
+.mobile-overlay {
+  display: none; /* Oculta o overlay por padrão */
+  position: fixed; /* Fixa o overlay cobrindo toda a tela */
+  inset: 0; /* Define top, right, bottom e left como 0 */
+  background: rgba(0, 0, 0, 0.4); /* Define fundo preto com 40% de opacidade */
+  z-index: 95; /* Posiciona abaixo da barra lateral, mas acima do conteúdo */
+}
+
+/* Exibe o overlay quando a classe 'hidden' é removida */
+.mobile-overlay:not(.hidden) {
+  display: block; /* Torna o overlay visível */
+}
+
+/* ==========================================================================
+   CONTEÚDO PRINCIPAL E TOPBAR
+   ========================================================================== */
+/* Container principal do conteúdo à direita da barra lateral */
+.main-content {
+  margin-left: 0; /* Remove margem esquerda padrão */
+  flex: 1; /* Ocupa o restante do espaço disponível na tela */
+  display: flex; /* Organiza os elementos internos em coluna */
+  flex-direction: column; /* Define a direção vertical */
+  min-width: 0; /* Evita estouro de largura em elementos flexíveis */
+}
+
+/* Barra superior (Topbar) do painel */
+.topbar {
+  background-color: #F7F7F7; /* Define a cor de fundo da barra superior */
+  padding: 0 45px; /* Adiciona preenchimento horizontal nas laterais */
+  height: 85px; /* Define altura fixa para a barra superior */
+  display: flex; /* Organiza os itens horizontalmente */
+  align-items: center; /* Alinha os itens verticalmente ao centro */
+  justify-content: space-between; /* Espaça os elementos uniformemente entre as pontas */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06); /* Adiciona uma linha divisória sutil abaixo */
+  position: sticky; /* Mantém a barra fixa no topo ao rolar a página */
+  top: 0; /* Cola a barra no topo absoluto da janela */
+  z-index: 90; /* Define a ordem de empilhamento */
+}
+
+/* Botão de menu (hambúrguer ☰) */
+.menu-button {
+  display: block; /* Exibe o botão como bloco */
+  background: none; /* Remove o fundo padrão */
+  border: none; /* Remove a borda padrão */
+  font-size: 1.6rem; /* Define o tamanho grande do ícone/símbolo */
+  cursor: pointer; /* Altera o cursor para indicar que é clicável */
+  color: #490B0C; /* Define a cor do ícone como vinho */
+}
+
+/* Trilha de navegação estrutural (Breadcrumb) */
+.breadcrumb {
+  font-size: 0.92rem; /* Define o tamanho da fonte */
+  color: #666666; /* Define a cor cinza do texto */
+}
+
+/* Separador visual dentro do breadcrumb */
+.breadcrumb span {
+  color: #CCCCCC; /* Define a cor cinza clara para o separador */
+  margin: 0 10px; /* Adiciona espaçamento horizontal ao redor do separador */
+}
+
+/* Link para visualizar o site público a partir do painel */
+.view-site {
+  text-decoration: none; /* Remove o sublinhado do link */
+  color: #490B0C; /* Define a cor do texto como vinho */
+  font-size: 0.88rem; /* Define o tamanho da fonte */
+  font-weight: 600; /* Torna a fonte semi-negrito */
+  padding: 12px 20px; /* Adiciona preenchimento interno ao redor do botão/link */
+  background-color: rgba(73, 11, 12, 0.06); /* Aplica fundo translúcido em tom de vinho */
+  border-radius: 12px; /* Arredonda as bordas */
+  transition: background-color 0.2s ease; /* Adiciona transição suave para o fundo */
+}
+
+/* Efeito ao passar o mouse sobre o link de visualização do site */
+.view-site:hover {
+  background-color: rgba(73, 11, 12, 0.1); /* Escurece levemente o fundo ao passar o mouse */
+}
+
+/* Container interno onde ficam os conteúdos dinâmicos da página */
+.page-content {
+  padding: 50px 45px; /* Adiciona preenchimento interno generoso */
+  display: flex; /* Organiza os elementos internos em coluna */
+  flex-direction: column; /* Define a direção vertical */
+  gap: 40px; /* Define o espaçamento entre as seções da página */
+}
+
+/* Cabeçalho da página */
+.page-heading {
+  display: flex; /* Organiza os itens horizontalmente */
+  justify-content: space-between; /* Espaça os elementos entre as extremidades */
+  align-items: flex-start; /* Alinha os itens pelo topo */
+  flex-wrap: wrap; /* Permite que os itens quebrem linha em telas menores */
+  gap: 25px; /* Define o espaçamento caso haja quebra de linha */
+}
+
+/* Texto pequeno superior (Sobretítulo / Categoria) */
+.eyebrow {
+  font-size: 0.75rem; /* Define o tamanho pequeno da fonte */
+  letter-spacing: 2px; /* Adiciona espaçamento largo entre as letras */
+  color: #6E859C; /* Define a cor cinza-azulado */
+  font-weight: 600; /* Torna o texto semi-negrito */
+  margin-bottom: 10px; /* Adiciona margem inferior */
+  text-transform: uppercase; /* Converte todas as letras para maiúsculas */
+}
+
+/* Título principal da página */
+.page-heading h1 {
+  font-family: 'Nonchalance', sans-serif; /* Define a fonte tipográfica decorativa */
+  color: #490B0C; /* Define a cor do título como vinho */
+  font-size: 3.2rem; /* Define o tamanho grande da fonte */
+  font-weight: normal; /* Define o peso da fonte como normal */
+  margin-bottom: 10px; /* Adiciona margem inferior */
+  line-height: 1.1; /* Ajusta a altura da linha para aproximar as linhas do título */
+}
+
+/* Descrição detalhada da página */
+.page-description {
+  font-size: 1.05rem; /* Define o tamanho da fonte da descrição */
+  color: #666666; /* Define a cor cinza do texto */
+}
+
+/* Grade de Resumos (Summary Grid) */
+.summary-grid {
+  display: grid; /* Utiliza CSS Grid para organizar os cards */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Cria colunas responsivas automáticas */
+  gap: 25px; /* Define o espaçamento entre os cards */
+}
+
+/* Card individual de resumo */
+.summary-card {
+  background-color: #FFFFFF; /* Define o fundo branco para o card */
+  padding: 30px; /* Adiciona preenchimento interno */
+  border-radius: 24px; /* Arredonda bastante as bordas do card */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Adiciona sombra suave e difusa */
+  border: 1px solid rgba(0, 0, 0, 0.04); /* Adiciona borda sutil ao redor do card */
+}
+
+/* Rótulo descritivo pequeno dentro do card de resumo */
+.summary-card span {
+  display: block; /* Exibe o elemento como bloco */
+  font-size: 0.78rem; /* Define o tamanho pequeno da fonte */
+  color: #6E859C; /* Define a cor cinza-azulado */
+  margin-bottom: 12px; /* Adiciona margem inferior */
+  font-weight: 600; /* Torna o texto semi-negrito */
+  letter-spacing: 1px; /* Adiciona espaçamento leve entre as letras */
+}
+
+/* Valor numérico em destaque no card de resumo */
+.summary-card strong {
+  font-size: 2.3rem; /* Define o tamanho grande da fonte para o número */
+  font-weight: 600; /* Torna o número semi-negrito */
+  color: #490B0C; /* Define a cor do número como vinho */
+  display: block; /* Exibe o elemento como bloco */
+  margin-bottom: 6px; /* Adiciona margem inferior */
+}
+
+/* Texto menor de rodapé dentro do card de resumo */
+.summary-card small {
+  font-size: 0.8rem; /* Define o tamanho pequeno da fonte */
+  color: #888888; /* Define a cor cinza do texto */
+}
+
+/* Painel de conteúdo genérico e Tabela */
+.panel {
+  background-color: #FFFFFF; /* Define o fundo branco para o painel */
+  padding: 35px; /* Adiciona preenchimento interno generoso */
+  border-radius: 24px; /* Arredonda as bordas do painel */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Adiciona sombra sutil */
+  border: 1px solid rgba(0, 0, 0, 0.04); /* Adiciona borda sutil ao redor do painel */
+}
+
+/* Cabeçalho da seção dentro do painel */
+.section-heading {
+  display: flex; /* Organiza os itens horizontalmente */
+  justify-content: space-between; /* Espaça os elementos entre as extremidades */
+  align-items: center; /* Alinha os itens verticalmente ao centro */
+  margin-bottom: 25px; /* Adiciona margem inferior */
+  flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+  gap: 15px; /* Define o espaçamento entre os elementos */
+}
+
+/* Título da seção dentro do painel */
+.section-heading h2 {
+  font-family: 'Nonchalance', sans-serif; /* Define a fonte tipográfica decorativa */
+  color: #490B0C; /* Define a cor do título como vinho */
+  font-size: 2rem; /* Define o tamanho da fonte */
+  font-weight: normal; /* Define o peso normal da fonte */
+}
+
+/* Container de filtros de busca e seleção */
+.filters {
+  display: flex; /* Organiza os filtros em linha */
+  gap: 15px; /* Define o espaçamento entre os campos de filtro */
+  margin-bottom: 25px; /* Adiciona margem inferior */
+  flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+  align-items: center; /* Alinha verticalmente ao centro */
+}
+
+/* Campo de busca (Search Field) */
+.search-field {
+  flex: 1; /* Ocupa o espaço disponível flexível */
+  min-width: 280px; /* Define largura mínima para o campo de busca */
+  display: flex; /* Organiza o ícone e o input em linha */
+  align-items: center; /* Alinha verticalmente ao centro */
+  background-color: #F7F7F7; /* Define fundo cinza claro */
+  border: 1px solid rgba(0, 0, 0, 0.08); /* Adiciona borda fina sutil */
+  border-radius: 14px; /* Arredonda as bordas */
+  padding: 0 16px; /* Adiciona preenchimento horizontal */
+  gap: 10px; /* Define espaçamento entre o ícone e o input */
+}
+
+/* Input de texto dentro do campo de busca */
+.search-field input {
+  width: 100%; /* Ocupa largura total */
+  padding: 12px 0; /* Adiciona preenchimento vertical */
+  border: none; /* Remove a borda padrão */
+  background: none; /* Remove o fundo padrão */
+  font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+  font-size: 0.92rem; /* Define o tamanho da fonte */
+  outline: none; /* Remove o contorno padrão de foco */
+}
+
+/* Seletores (selects) dentro da barra de filtros */
+.filters select {
+  padding: 12px 18px; /* Adiciona preenchimento interno */
+  background-color: #F7F7F7; /* Define fundo cinza claro */
+  border: 1px solid rgba(0, 0, 0, 0.08); /* Adiciona borda fina sutil */
+  border-radius: 14px; /* Arredonda as bordas */
+  font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+  font-size: 0.9rem; /* Define o tamanho da fonte */
+  outline: none; /* Remove o contorno de foco */
+  cursor: pointer; /* Altera o cursor do mouse */
+}
+
+/* Container com rolagem horizontal para a tabela */
+.table-wrapper {
+  overflow-x: auto; /* Adiciona barra de rolagem horizontal se a tabela for larga demais */
+}
+
+/* Estilização da tabela de dados */
+table {
+  width: 100%; /* Ocupa largura total do container */
+  border-collapse: collapse; /* Combina as bordas das células */
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+/* Células de cabeçalho da tabela (th) */
+th {
+  font-size: 0.78rem; /* Define o tamanho pequeno da fonte */
+  letter-spacing: 1.5px; /* Adiciona espaçamento entre as letras */
+  color: #6E859C; /* Define a cor cinza-azulado */
+  text-transform: uppercase; /* Converte todas as letras para maiúsculas */
+  padding: 16px 18px; /* Adiciona preenchimento interno */
+  border-bottom: 2px solid #F7F7F7; /* Adiciona linha divisória inferior mais espessa */
+  font-weight: 600; /* Torna o texto semi-negrito */
+}
+
+/* Células de dados da tabela (td) */
+td {
+  padding: 18px; /* Adiciona preenchimento interno generoso */
+  font-size: 0.92rem; /* Define o tamanho da fonte */
+  border-bottom: 1px solid #F7F7F7; /* Adiciona linha divisória inferior sutil */
+  color: #444444; /* Define a cor do texto como cinza escuro */
+}
+
+/* Efeito ao passar o mouse sobre as linhas do corpo da tabela */
+tbody tr:hover {
+  background-color: #FAFAFA; /* Altera levemente o fundo da linha ao passar o mouse */
+}
+
+/* Contador de resultados exibido na tabela */
+.result-count {
+  font-size: 0.88rem; /* Define o tamanho da fonte */
+  color: #6E859C; /* Define a cor cinza-azulado */
+  font-weight: 500; /* Torna o texto semi-negrito */
+}
+
+/* Badges de Status (Indicadores visuais de estado) */
+.status-badge {
+  display: inline-block; /* Exibe em linha como bloco */
+  padding: 6px 12px; /* Adiciona preenchimento interno */
+  border-radius: 8px; /* Arredonda as bordas */
+  font-size: 0.78rem; /* Define o tamanho da fonte */
+  font-weight: 600; /* Torna o texto semi-negrito */
+}
+
+/* Cores específicas para cada status de entrega */
+.status-badge.producao { background-color: #FFF3E0; color: #E65100; } /* Laranja para Produção */
+.status-badge.edicao { background-color: #E3F2FD; color: #1565C0; } /* Azul para Edição */
+.status-badge.revisao { background-color: #F3E5F5; color: #7B1FA2; } /* Roxo para Revisão */
+.status-badge.pronta { background-color: #E0F2F1; color: #00695C; } /* Verde-água para Pronta */
+.status-badge.entregue { background-color: #E8F5E9; color: #2E7D32; } /* Verde para Entregue */
+
+/* Botão principal de ação (sólido) */
+.primary-button {
+  background-color: #490B0C; /* Define a cor de fundo em tom de vinho */
+  color: #FFFFFF; /* Define a cor do texto como branco */
+  border: none; /* Remove a borda padrão */
+  padding: 14px 24px; /* Define o preenchimento interno */
+  border-radius: 14px; /* Arredonda as bordas */
+  font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+  font-size: 0.92rem; /* Define o tamanho da fonte */
+  font-weight: 600; /* Torna a fonte semi-negrito */
+  cursor: pointer; /* Altera o cursor do mouse */
+  display: inline-flex; /* Utiliza flexbox em linha */
+  align-items: center; /* Alinha verticalmente ao centro */
+  gap: 8px; /* Define espaçamento entre ícone e texto */
+}
+
+/* Efeito ao passar o mouse sobre o botão primário */
+.primary-button:hover {
+  background-color: #350708; /* Escurece a cor de fundo ao passar o mouse */
+}
+
+/* Botão secundário de ação (com borda) */
+.secondary-button {
+  background-color: transparent; /* Deixa o fundo transparente */
+  color: #490B0C; /* Define a cor do texto como vinho */
+  border: 1px solid rgba(73, 11, 12, 0.25); /* Adiciona borda fina em tom de vinho */
+  padding: 12px 20px; /* Define o preenchimento interno */
+  border-radius: 12px; /* Arredonda as bordas */
+  font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+  font-size: 0.88rem; /* Define o tamanho da fonte */
+  font-weight: 600; /* Torna a fonte semi-negrito */
+  cursor: pointer; /* Altera o cursor do mouse */
+}
+
+/* Link em formato de texto interativo */
+.text-link {
+  background: none; /* Remove o fundo */
+  border: none; /* Remove a borda */
+  color: #490B0C; /* Define a cor do texto como vinho */
+  font-weight: 600; /* Torna o texto semi-negrito */
+  cursor: pointer; /* Altera o cursor do mouse */
+  font-size: 0.9rem; /* Define o tamanho da fonte */
+}
+
+/* Aviso de demonstração (Demo Notice) */
+.demo-notice {
+  background-color: #EFEBE9; /* Define o fundo bege claro */
+  padding: 18px 22px; /* Adiciona preenchimento interno */
+  border-radius: 16px; /* Arredonda as bordas */
+  display: flex; /* Organiza os itens em linha */
+  align-items: center; /* Alinha verticalmente ao centro */
+  gap: 15px; /* Define o espaçamento entre os elementos */
+  font-size: 0.9rem; /* Define o tamanho da fonte */
+  color: #490B0C; /* Define a cor do texto como vinho */
+}
+
+/* Modais */
+/* Fundo escurecido (Backdrop) para modais */
+.modal-backdrop {
+  position: fixed; /* Fixa o elemento cobrindo toda a tela */
+  inset: 0; /* Define top, right, bottom e left como 0 */
+  background: rgba(0, 0, 0, 0.5); /* Define fundo preto com 50% de opacidade */
+  display: flex; /* Utiliza flexbox para centralizar o modal */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  z-index: 200; /* Define alta ordem de empilhamento */
+  padding: 20px; /* Adiciona preenchimento interno */
+}
+
+/* Janela principal do modal */
+.modal {
+  background-color: #FFFFFF; /* Define fundo branco */
+  width: 100%; /* Ocupa largura total disponível */
+  max-width: 680px; /* Define largura máxima do modal */
+  padding: 40px; /* Adiciona preenchimento interno */
+  border-radius: 24px; /* Arredonda as bordas */
+  max-height: 90vh; /* Limita a altura máxima a 90% da tela */
+  overflow-y: auto; /* Adiciona rolagem vertical interna se o conteúdo for extenso */
+}
+
+/* Cabeçalho do modal */
+.modal-header {
+  display: flex; /* Organiza o título e o botão de fechar em linha */
+  justify-content: space-between; /* Espaça os elementos entre as extremidades */
+  margin-bottom: 25px; /* Adiciona margem inferior */
+}
+
+/* Título dentro do cabeçalho do modal */
+.modal-header h2 {
+  font-family: 'Nonchalance', sans-serif; /* Define a fonte tipográfica decorativa */
+  color: #490B0C; /* Define a cor do texto como vinho */
+  font-size: 2.3rem; /* Define o tamanho da fonte */
+}
+
+/* Botão para fechar o modal (X) */
+.close-button {
+  background: none; /* Remove o fundo */
+  border: none; /* Remove a borda */
+  font-size: 1.8rem; /* Define o tamanho grande */
+  cursor: pointer; /* Altera o cursor do mouse */
+  color: #888; /* Define a cor cinza */
+}
+
+/* Grade para organização de formulários em duas colunas */
+.form-grid {
+  display: grid; /* Utiliza CSS Grid */
+  grid-template-columns: 1fr 1fr; /* Divide em duas colunas iguais */
+  gap: 20px; /* Define espaçamento entre os campos */
+}
+
+/* Classe utilitária para campos de formulário que ocupam toda a largura */
+.full-width { grid-column: 1 / -1; }
+
+/* Estilização de rótulos de formulário (labels) */
+label {
+  display: flex; /* Organiza o texto e o campo em coluna */
+  flex-direction: column; /* Define direção vertical */
+  gap: 8px; /* Define espaçamento entre o rótulo e o input */
+  font-size: 0.88rem; /* Define o tamanho da fonte */
+  font-weight: 500; /* Torna o texto semi-negrito */
+  color: #444; /* Define a cor do texto como cinza escuro */
+}
+
+/* Campos de entrada, seleções e áreas de texto de formulários */
+input, select, textarea {
+  width: 100%; /* Ocupa toda a largura disponível do container */
+  padding: 14px 16px; /* Adiciona preenchimento interno */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Adiciona borda fina sutil */
+  border-radius: 12px; /* Arredonda as bordas */
+  font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+  font-size: 0.92rem; /* Define o tamanho da fonte */
+  background-color: #FAFAFA; /* Define fundo cinza muito claro */
+  outline: none; /* Remove contorno padrão */
+}
+
+/* Efeito de foco em campos de formulário */
+input:focus, select:focus, textarea:focus {
+  border-color: #490B0C; /* Altera a cor da borda para vinho ao focar */
+  background-color: #FFFFFF; /* Torna o fundo totalmente branco ao focar */
+}
+
+/* Caixa de erro em formulários */
+.form-error {
+  background-color: #FFEBEE; /* Define fundo vermelho claro */
+  color: #C62828; /* Define cor do texto vermelho escuro */
+  padding: 12px; /* Adiciona preenchimento interno */
+  border-radius: 10px; /* Arredonda as bordas */
+  font-size: 0.88rem; /* Define o tamanho da fonte */
+  margin-top: 15px; /* Adiciona margem superior */
+}
+
+/* Container de ações/botões na parte inferior do modal */
+.modal-actions {
+  display: flex; /* Organiza os botões em linha */
+  justify-content: flex-end; /* Alinha os botões à direita */
+  gap: 15px; /* Define o espaçamento entre os botões */
+  margin-top: 25px; /* Adiciona margem superior */
+}
+
+/* Estado vazio (Empty State) para tabelas ou listas sem registros */
+.empty-state {
+  text-align: center; /* Centraliza o texto */
+  padding: 50px 20px; /* Adiciona preenchimento interno */
+  color: #888; /* Define cor cinza */
+}
+
+/* Ícone ou símbolo em destaque no estado vazio */
+.empty-state span {
+  font-size: 2rem; /* Define tamanho grande */
+  color: #490B0C; /* Define cor em tom de vinho */
+  display: block; /* Exibe como bloco */
+  margin-bottom: 10px; /* Adiciona margem inferior */
+}
+
+/* Título dentro do estado vazio */
+.empty-state h3 {
+  font-family: 'Nonchalance', sans-serif; /* Define fonte decorativa */
+  font-size: 1.8rem; /* Define tamanho da fonte */
+  color: #490B0C; /* Define cor em tom de vinho */
+  margin-bottom: 5px; /* Adiciona margem inferior */
+}
+
+/* Classe utilitária para ocultar elementos completamente */
+.hidden { display: none !important; }
+
+/* Rodapé geral da página */
+.page-footer {
+  display: flex; /* Organiza os elementos em linha */
+  justify-content: space-between; /* Espaça os itens entre as extremidades */
+  font-size: 0.88rem; /* Define o tamanho da fonte */
+  color: #888; /* Define a cor cinza */
+  padding-top: 25px; /* Adiciona preenchimento superior */
+  border-top: 1px solid rgba(0, 0, 0, 0.04); /* Adiciona linha divisória sutil acima */
+}
+
+/* Regras de responsividade para telas de até 900 pixels de largura */
+@media (max-width: 900px) {
+  .page-content { padding: 25px 20px; gap: 25px; } /* Reduz preenchimentos e espaçamentos da página */
+  .topbar { padding: 0 20px; } /* Reduz o preenchimento lateral da barra superior */
+  .page-heading h1 { font-size: 2.5rem; } /* Diminui o tamanho do título principal */
+  .form-grid { grid-template-columns: 1fr; } /* Transforma a grade de formulários em coluna única */
+  .modal { padding: 25px 20px; } /* Reduz o preenchimento interno do modal */
+}
+
+/* ==========================================================================
+   AJUSTES DE COMPATIBILIDADE COM ANGULAR
+   ========================================================================== */
+
+/* Mantém a largura do painel dentro da tela, inclusive com tabelas extensas */
+:host {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Impede que campos grandes ultrapassem a grade do formulário */
+.form-grid > label {
+  min-width: 0;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+  min-width: 0;
+}
+
+/* Evita que os botões do modal se sobreponham em telas pequenas */
+@media (max-width: 600px) {
+  .modal-actions {
+    flex-wrap: wrap;
+  }
+
+  .filters .search-field {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .filters select {
+    width: 100%;
+  }
+
+  .page-footer {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}

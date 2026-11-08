@@ -1,0 +1,527 @@
+
+<div class="admin-layout">
+
+    <!-- MENU LATERAL -->
+    <aside class="sidebar" [class.open]="menuAberto">
+
+        <a routerLink="/admin" class="brand">
+            <img src="/imagens/logoleticia.png" alt="Letícia Gomes Fotografia" class="brand-logo-img">
+            <span>
+                <strong>Letícia Gomes</strong>
+                <small>PAINEL ADMINISTRATIVO</small>
+            </span>
+        </a>
+
+        <div class="menu-label">MENU PRINCIPAL</div>
+
+        <nav class="navigation">
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">⌂</span><span>01. Início</span>
+            </a>
+
+            <a routerLink="/solicitacoes" routerLinkActive="active" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▤</span><span>02. Solicitações</span>
+            </a>
+
+            <a routerLink="/clientes" routerLinkActive="active" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">♙</span><span>03. Clientes</span>
+            </a>
+
+            <a routerLink="/agenda" routerLinkActive="active" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▦</span><span>04. Agenda</span>
+            </a>
+
+            <a routerLink="/entregas" routerLinkActive="active" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▧</span><span>05. Entregas</span>
+            </a>
+
+            <a routerLink="/financeiro" routerLinkActive="active" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">R$</span><span>06. Financeiro</span>
+            </a>
+
+            <a routerLink="/editor-site" routerLinkActive="active" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">✎</span><span>07. Editar site</span>
+            </a>
+
+            <a routerLink="/configuracoes" routerLinkActive="active" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">⚙</span><span>08. Configurações</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="profile">
+                <div class="profile-avatar">LG</div>
+                <div>
+                    <strong>Letícia Gomes</strong>
+                    <small>Administradora</small>
+                </div>
+            </div>
+
+            <button type="button" class="logout-button" (click)="sair()">
+                ↗ Sair do painel
+            </button>
+        </div>
+    </aside>
+
+    <!-- OVERLAY DO MENU -->
+    <div
+        class="mobile-overlay hidden"
+        [class.hidden]="!menuAberto"
+        (click)="fecharMenu()">
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <button
+                type="button"
+                class="menu-button"
+                (click)="alternarMenu()"
+                aria-label="Abrir menu"
+                [attr.aria-expanded]="menuAberto">
+                ☰
+            </button>
+
+            <div class="breadcrumb">
+                Painel administrativo <span>/</span> Solicitações e propostas
+            </div>
+
+            <a routerLink="/home" class="view-site">↗ Ver site</a>
+        </header>
+
+        <div class="page-content">
+
+            <!-- CABEÇALHO -->
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow">RELACIONAMENTO COM CLIENTES</p>
+                    <h1>Solicitações e propostas</h1>
+                    <p class="page-description">
+                        Acompanhe cada oportunidade, do primeiro contato à confirmação do ensaio.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    (click)="novaSolicitacao()">
+                    <span>+</span> Nova solicitação
+                </button>
+            </section>
+
+            <!-- CARDS DE INDICADORES -->
+            <section class="summary-grid">
+
+                <article class="summary-card">
+                    <span>Novas solicitações</span>
+                    <strong>{{ countNew }}</strong>
+                    <small>Aguardando atendimento</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Em negociação</span>
+                    <strong>{{ countNegotiation }}</strong>
+                    <small>Em contato com o cliente</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Propostas enviadas</span>
+                    <strong>{{ countProposals }}</strong>
+                    <small>Aguardando resposta</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Ensaios confirmados</span>
+                    <strong>{{ countConfirmed }}</strong>
+                    <small>Solicitações confirmadas</small>
+                </article>
+
+            </section>
+
+            <!-- FLUXO COMERCIAL -->
+            <section class="panel pipeline">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">FLUXO COMERCIAL</p>
+                        <h2>Acompanhamento das oportunidades</h2>
+                    </div>
+                </div>
+
+                <div class="pipeline-steps">
+
+                    <div class="pipeline-step">
+                        <span class="step-number">01</span>
+                        <span>Nova solicitação</span>
+                    </div>
+
+                    <span class="pipeline-arrow">→</span>
+
+                    <div class="pipeline-step">
+                        <span class="step-number">02</span>
+                        <span>Em negociação</span>
+                    </div>
+
+                    <span class="pipeline-arrow">→</span>
+
+                    <div class="pipeline-step">
+                        <span class="step-number">03</span>
+                        <span>Proposta enviada</span>
+                    </div>
+
+                    <span class="pipeline-arrow">→</span>
+
+                    <div class="pipeline-step">
+                        <span class="step-number">04</span>
+                        <span>Confirmada ou encerrada</span>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- LISTA DE SOLICITAÇÕES -->
+            <section class="panel requests-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">CAIXA DE ENTRADA</p>
+                        <h2>Solicitações recebidas</h2>
+                    </div>
+
+                    <span class="result-count">
+                        {{ solicitacoesFiltradas.length }}
+                        {{ solicitacoesFiltradas.length === 1 ? 'registro' : 'registros' }}
+                    </span>
+                </div>
+
+                <!-- FILTROS -->
+                <div class="filters">
+
+                    <div class="search-field">
+                        <span>⌕</span>
+
+                        <input
+                            type="search"
+                            name="termoBusca"
+                            [(ngModel)]="termoBusca"
+                            (ngModelChange)="aplicarFiltros()"
+                            placeholder="Buscar por nome, e-mail ou ensaio..."
+                            aria-label="Buscar solicitações">
+                    </div>
+
+                    <select
+                        name="filtroStatus"
+                        [(ngModel)]="filtroStatus"
+                        (ngModelChange)="aplicarFiltros()"
+                        aria-label="Filtrar por status">
+
+                        <option value="">Todos os status</option>
+                        <option value="Nova">Nova solicitação</option>
+                        <option value="Em negociação">Em negociação</option>
+                        <option value="Proposta enviada">Proposta enviada</option>
+                        <option value="Confirmada">Confirmada</option>
+                        <option value="Encerrada">Encerrada</option>
+                    </select>
+
+                    <select
+                        name="filtroProposta"
+                        [(ngModel)]="filtroProposta"
+                        (ngModelChange)="aplicarFiltros()"
+                        aria-label="Filtrar propostas">
+
+                        <option value="">Todas as propostas</option>
+                        <option value="Não elaborada">Não elaborada</option>
+                        <option value="Rascunho">Em elaboração</option>
+                        <option value="Enviada">Enviada</option>
+                        <option value="Aceita">Aceita</option>
+                        <option value="Recusada">Recusada</option>
+                    </select>
+
+                    <button
+                        type="button"
+                        class="text-link"
+                        (click)="limparFiltros()">
+                        Limpar filtros
+                    </button>
+
+                </div>
+
+                <!-- TABELA -->
+                <div class="table-wrapper">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Tipo de ensaio</th>
+                                <th>Data desejada</th>
+                                <th>Status</th>
+                                <th>Proposta</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @for (item of solicitacoesFiltradas; track item.id) {
+                                <tr>
+                                    <td>
+                                        <strong>{{ item.name }}</strong><br>
+                                        <small style="color: #777;">
+                                            {{ item.email || item.phone || 'Sem contato' }}
+                                        </small>
+                                    </td>
+
+                                    <td>{{ item.service }}</td>
+
+                                    <td>{{ formatDate(item.desiredDate) }}</td>
+
+                                    <td>
+                                        <span class="status-badge" [ngClass]="getStatusClass(item.status)">
+                                            {{ item.status }}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ item.proposalStatus || 'Não elaborada' }}</td>
+
+                                    <td>
+                                        <div class="action-buttons">
+
+                                            <button
+                                                type="button"
+                                                class="icon-button"
+                                                title="Editar"
+                                                aria-label="Editar solicitação"
+                                                (click)="editarSolicitacao(item)">
+                                                ✎
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                class="icon-button"
+                                                title="Excluir"
+                                                aria-label="Excluir solicitação"
+                                                (click)="excluirSolicitacao(item.id)">
+                                                ×
+                                            </button>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- ESTADO VAZIO -->
+                @if (solicitacoesFiltradas.length === 0) {
+                    <div class="empty-state">
+                        <span>✳</span>
+                        <h3>Nenhuma solicitação encontrada</h3>
+                        <p>
+                            Experimente alterar os filtros ou cadastrar uma nova solicitação.
+                        </p>
+                    </div>
+                }
+
+            </section>
+
+            <!-- RODAPÉ -->
+            <footer class="page-footer">
+                <span>© {{ anoAtual }} Letícia Gomes Fotografia</span>
+                <span>Relacionamento com cuidado, em cada detalhe.</span>
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<!-- MODAL DE CADASTRO E EDIÇÃO -->
+<div
+    class="modal-backdrop hidden"
+    [class.hidden]="!modalAberto">
+
+    <section
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">FICHA DE ATENDIMENTO</p>
+                <h2 id="modalTitle">
+                    {{ editando ? 'Editar solicitação' : 'Nova solicitação' }}
+                </h2>
+            </div>
+
+            <button
+                type="button"
+                class="close-button"
+                (click)="fecharModal()"
+                aria-label="Fechar">
+                ×
+            </button>
+        </div>
+
+        <form (ngSubmit)="salvarSolicitacao()">
+
+            <div class="form-section">
+                <h3>Dados do cliente</h3>
+
+                <div class="form-grid">
+
+                    <label class="full-width">
+                        Nome completo *
+                        <input
+                            type="text"
+                            name="clientName"
+                            [(ngModel)]="solicitacaoForm.name"
+                            required
+                            maxlength="120"
+                            placeholder="Nome do cliente">
+                    </label>
+
+                    <label>
+                        E-mail
+                        <input
+                            type="email"
+                            name="clientEmail"
+                            [(ngModel)]="solicitacaoForm.email"
+                            maxlength="160"
+                            placeholder="cliente@email.com">
+                    </label>
+
+                    <label>
+                        Telefone / WhatsApp
+                        <input
+                            type="tel"
+                            name="clientPhone"
+                            [(ngModel)]="solicitacaoForm.phone"
+                            maxlength="30"
+                            placeholder="(11) 99999-9999">
+                    </label>
+
+                    <label>
+                        Tipo de ensaio *
+                        <input
+                            type="text"
+                            name="sessionType"
+                            [(ngModel)]="solicitacaoForm.service"
+                            placeholder="Ex.: Ensaio individual"
+                            required
+                            maxlength="100">
+                    </label>
+
+                    <label>
+                        Data desejada
+                        <input
+                            type="date"
+                            name="desiredDate"
+                            [(ngModel)]="solicitacaoForm.desiredDate">
+                    </label>
+
+                    <label class="full-width">
+                        Observações
+                        <textarea
+                            name="clientNotes"
+                            [(ngModel)]="solicitacaoForm.notes"
+                            rows="3"
+                            maxlength="2000"
+                            placeholder="Preferências, local, referências e detalhes...">
+                        </textarea>
+                    </label>
+
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Andamento da solicitação</h3>
+
+                <div class="form-grid">
+
+                    <label>
+                        Status *
+                        <select
+                            name="requestStatus"
+                            [(ngModel)]="solicitacaoForm.status"
+                            required>
+
+                            <option value="Nova">Nova solicitação</option>
+                            <option value="Em negociação">Em negociação</option>
+                            <option value="Proposta enviada">Proposta enviada</option>
+                            <option value="Confirmada">Confirmada</option>
+                            <option value="Encerrada">Encerrada</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Situação da proposta
+                        <select
+                            name="proposalStatus"
+                            [(ngModel)]="solicitacaoForm.proposalStatus">
+
+                            <option value="Não elaborada">Não elaborada</option>
+                            <option value="Rascunho">Em elaboração</option>
+                            <option value="Enviada">Enviada</option>
+                            <option value="Aceita">Aceita</option>
+                            <option value="Recusada">Recusada</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Valor proposto (R$)
+                        <input
+                            type="number"
+                            name="proposalAmount"
+                            [(ngModel)]="solicitacaoForm.proposalAmount"
+                            min="0"
+                            step="0.01"
+                            placeholder="0,00">
+                    </label>
+
+                    <label>
+                        Validade da proposta
+                        <input
+                            type="date"
+                            name="proposalValidity"
+                            [(ngModel)]="solicitacaoForm.proposalValidity">
+                    </label>
+
+                    <label class="full-width">
+                        Condições da proposta
+                        <textarea
+                            name="proposalConditions"
+                            [(ngModel)]="solicitacaoForm.proposalConditions"
+                            rows="3"
+                            maxlength="2000"
+                            placeholder="Forma de pagamento, número de fotos, prazos...">
+                        </textarea>
+                    </label>
+
+                </div>
+            </div>
+
+            @if (formError) {
+                <p class="form-error" role="alert">{{ formError }}</p>
+            }
+
+            <div class="modal-actions">
+                <button
+                    type="button"
+                    class="secondary-button"
+                    (click)="fecharModal()">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="primary-button">
+                    Salvar solicitação
+                </button>
+            </div>
+
+        </form>
+    </section>
+</div>

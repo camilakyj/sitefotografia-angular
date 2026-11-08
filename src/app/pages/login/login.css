@@ -1,0 +1,160 @@
+
+/* ==========================================================================
+   ESTILOS DA PÁGINA DE LOGIN ADMINISTRATIVO
+   ========================================================================== */
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #490B0C;
+    font-family: 'Poppins', sans-serif;
+    color: #333333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cabeçalho */
+.cabecalho-login {
+    padding: 25px 6%;
+}
+
+.btn-voltar {
+    display: inline-block;
+    text-decoration: none;
+    color: #F7F7F7;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-voltar:hover {
+    color: #EADADA;
+    transform: translateX(-3px);
+}
+
+/* Centralização do Card */
+.container-login {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card-login {
+    background-color: #F7F7F7;
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 35px;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Cabeçalho do Card */
+.header-card {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-admin {
+    max-width: 130px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.header-card h2 {
+    font-family: 'Nonchalance', sans-serif;
+    color: #490B0C;
+    font-size: 2rem;
+    font-weight: normal;
+    margin-bottom: 6px;
+}
+
+/* Formulário e Inputs */
+#formLogin {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.campo label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #490B0C;
+    margin-bottom: 8px;
+}
+
+.campo input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #333333;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo input:focus {
+    border-color: #490B0C;
+    box-shadow: 0 0 0 3px rgba(73, 11, 12, 0.1);
+}
+
+/* Botão Entrar */
+.btn-entrar {
+    width: 100%;
+    padding: 15px;
+    background-color: #490B0C;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-entrar:hover {
+    background-color: #5b7288;
+    transform: translateY(-2px);
+}
+
+/* BOTÃO PARA MOSTRAR OU OCULTAR A SENHA */
+.toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #6E859C;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.toggle:hover {
+    background-color: #f0f2f5;
+    color: #490B0C;
+}

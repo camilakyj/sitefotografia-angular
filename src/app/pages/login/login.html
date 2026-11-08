@@ -1,0 +1,65 @@
+
+<!-- CABEÇALHO COM BOTÃO DE VOLTAR -->
+<header class="cabecalho-login">
+    <a routerLink="/home" class="btn-voltar">
+        ← Voltar para o site
+    </a>
+</header>
+
+<!-- TELA DE LOGIN CENTRALIZADA -->
+<main class="container-login">
+    <div class="card-login">
+
+        <div class="header-card">
+            <img src="/imagens/logoleticia.png" alt="Logo Letícia Gomes" class="logo-admin">
+
+            <span class="eyebrow" style="display: block; font-size: 0.75rem; letter-spacing: 2px; color: #6E859C; font-weight: 600; text-transform: uppercase; margin-bottom: 4px;">
+                BEM-VINDA DE VOLTA
+            </span>
+
+            <h2>Acessar painel</h2>
+        </div>
+
+<p id="feedback" #feedback class="feedback" role="status" aria-live="polite"></p>
+<form id="loginForm" #loginForm (submit)="entrar($event)" novalidate>           
+     <div class="campo">
+                <label for="email">E-mail</label>
+
+                <div class="input-wrap">
+                   <input type="email" id="email" #emailInput placeholder="seuemail@exemplo.com" autocomplete="username" required>
+                </div>
+            </div>
+
+            <div class="campo">
+                <div class="label-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label for="password" style="margin-bottom: 0;">Senha</label>
+
+                    <button type="button" class="text-button" id="forgotPassword" (click)="recuperarSenha()" style="background: none; border: none; font-family: 'Poppins', sans-serif; font-size: 0.8rem; color: #6E859C; cursor: pointer;">
+                        Esqueci minha senha
+                    </button>
+                </div>
+
+                <div class="input-wrap" style="position: relative;">
+               <input type="password" id="password" #passwordInput placeholder="Digite sua senha" autocomplete="current-password" required style="padding-right: 45px;">
+
+                <button type="button" class="toggle" id="togglePassword" #togglePassword (click)="alternarSenha()" aria-label="Mostrar senha" title="Mostrar senha">
+                 ◉
+              </button>
+           </div>
+           </div> 
+
+            <button type="submit" class="btn-entrar" #btnSubmit>
+                Entrar no Painel →
+            </button>
+        </form>
+
+        <div class="security" style="margin-top: 25px; text-align: center; font-size: 0.8rem; color: #777;">
+            <span aria-hidden="true">◇</span> Acesso restrito à administradora.
+        </div>
+
+    </div>
+</main>
+
+<footer style="text-align: center; padding: 20px; font-size: 0.85rem; color: #F7F7F7;">
+    © <span>{{ anoAtual }}</span> Letícia Gomes Fotografia
+</footer>

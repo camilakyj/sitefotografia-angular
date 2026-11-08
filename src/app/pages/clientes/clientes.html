@@ -1,0 +1,608 @@
+
+<!-- ==========================================================================
+     PÁGINA DE CLIENTES - LETÍCIA GOMES FOTOGRAFIA
+     ========================================================================== -->
+
+<div class="admin-layout">
+
+    <!-- MENU LATERAL RETRÁTIL -->
+    <aside class="sidebar" [class.open]="menuAberto">
+
+        <a routerLink="/admin" class="brand">
+            <img src="/imagens/logoleticia.png"
+                 alt="Letícia Gomes Fotografia"
+                 class="brand-logo-img">
+
+            <span>
+                <strong>Letícia Gomes</strong>
+                <small>PAINEL ADMINISTRATIVO</small>
+            </span>
+        </a>
+
+        <div class="menu-label">MENU PRINCIPAL</div>
+
+        <nav class="navigation">
+            <a routerLink="/admin" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">⌂</span><span>01. Início</span>
+            </a>
+
+            <a routerLink="/solicitacoes" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▤</span><span>02. Solicitações</span>
+            </a>
+
+            <a routerLink="/clientes" class="nav-link active" (click)="fecharMenu()">
+                <span class="nav-icon">♙</span><span>03. Clientes</span>
+            </a>
+
+            <a routerLink="/agenda" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▦</span><span>04. Agenda</span>
+            </a>
+
+            <a routerLink="/entregas" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▧</span><span>05. Entregas</span>
+            </a>
+
+            <a routerLink="/financeiro" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">R$</span><span>06. Financeiro</span>
+            </a>
+
+            <a routerLink="/editor-site" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">✎</span><span>07. Editar site</span>
+            </a>
+
+            <a routerLink="/configuracoes" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">⚙</span><span>08. Configurações</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="profile">
+                <div class="profile-avatar">LG</div>
+                <div>
+                    <strong>Letícia Gomes</strong>
+                    <small>Administradora</small>
+                </div>
+            </div>
+
+            <button type="button" class="logout-button" (click)="sair()">
+                ↗ Sair do painel
+            </button>
+        </div>
+    </aside>
+
+    <!-- OVERLAY PARA FECHAR O MENU -->
+    <div class="mobile-overlay"
+         [class.hidden]="!menuAberto"
+         (click)="fecharMenu()">
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- BARRA SUPERIOR -->
+        <header class="topbar">
+            <button class="menu-button"
+                    type="button"
+                    aria-label="Abrir menu"
+                    [attr.aria-expanded]="menuAberto"
+                    (click)="alternarMenu()">
+                ☰
+            </button>
+
+            <div class="breadcrumb">
+                Painel administrativo <span>/</span> Clientes
+            </div>
+
+            <a routerLink="/home" class="view-site">↗ Ver site</a>
+        </header>
+
+        <div class="page-content">
+
+            <!-- CABEÇALHO DA PÁGINA -->
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow">CADASTRO E RELACIONAMENTO</p>
+                    <h1>Clientes</h1>
+                    <p class="page-description">
+                        Contatos, ensaios e histórico de atendimento detalhado.
+                    </p>
+                </div>
+
+                <div class="heading-buttons">
+                    <button class="secondary-button"
+                            type="button"
+                            (click)="importarSolicitacao()">
+                        Cadastrar de solicitação
+                    </button>
+
+                    <button class="primary-button"
+                            type="button"
+                            (click)="novoCliente()">
+                        + Novo cliente
+                    </button>
+                </div>
+            </section>
+
+            <!-- AVISO DE DEMONSTRAÇÃO -->
+            <div class="demo-notice">
+                <span>ⓘ</span>
+                <p>Os cadastros são salvos localmente neste navegador.</p>
+            </div>
+
+            <!-- CARDS DE INDICADORES -->
+            <section class="summary-grid">
+
+                <article class="summary-card">
+                    <span>CLIENTES CADASTRADOS</span>
+                    <strong>{{ totalClientes }}</strong>
+                    <small>Total na base</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>COM ENSAIO REGISTRADO</span>
+                    <strong>{{ clientesComEnsaio }}</strong>
+                    <small>Histórico ativo</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>PROPOSTAS EM ABERTO</span>
+                    <strong>{{ propostasEmAberto }}</strong>
+                    <small>Aguardando fechamento</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>PAGAMENTOS PENDENTES</span>
+                    <strong>{{ pagamentosPendentes }}</strong>
+                    <small>Valores a receber</small>
+                </article>
+
+            </section>
+
+            <!-- PAINEL DA TABELA -->
+            <section class="panel table-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">BASE DE DADOS</p>
+                        <h2>Lista de clientes</h2>
+                    </div>
+
+                    <button class="secondary-button"
+                            type="button"
+                            (click)="exportarCSV()">
+                        Exportar CSV
+                    </button>
+                </div>
+
+                <!-- FILTROS -->
+                <div class="filters">
+
+                    <div class="search-field">
+                        <span>⌕</span>
+                        <input type="search"
+                               placeholder="Buscar nome, e-mail ou telefone..."
+                               aria-label="Buscar clientes"
+                               [(ngModel)]="termoBusca"
+                               (ngModelChange)="aplicarFiltros()">
+                    </div>
+
+                    <select aria-label="Filtrar por relacionamento"
+                            [(ngModel)]="filtroRelacionamento"
+                            (ngModelChange)="aplicarFiltros()">
+                        <option value="">Todos os relacionamentos</option>
+                        <option value="Lead">Em contato</option>
+                        <option value="Cliente">Cliente</option>
+                        <option value="Recorrente">Recorrente</option>
+                        <option value="Inativo">Sem atividade recente</option>
+                    </select>
+
+                    <select aria-label="Filtrar por ensaio"
+                            [(ngModel)]="filtroEnsaio"
+                            (ngModelChange)="aplicarFiltros()">
+                        <option value="">Todos os ensaios</option>
+                        <option value="com">Com ensaio registrado</option>
+                        <option value="sem">Sem ensaio registrado</option>
+                    </select>
+
+                    <select aria-label="Filtrar por pagamento"
+                            [(ngModel)]="filtroPagamento"
+                            (ngModelChange)="aplicarFiltros()">
+                        <option value="">Todos os pagamentos</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Parcial">Parcial</option>
+                        <option value="Pago">Pago</option>
+                        <option value="Não se aplica">Não se aplica</option>
+                    </select>
+
+                    <button class="text-link"
+                            type="button"
+                            (click)="limparFiltros()">
+                        Limpar filtros
+                    </button>
+                </div>
+
+                <!-- TABELA DE CLIENTES -->
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Contato</th>
+                                <th>Último ensaio</th>
+                                <th>Relacionamento</th>
+                                <th>Pagamento</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (cliente of clientesFiltrados; track cliente.id) {
+                                <tr>
+                                    <td>
+                                        <strong>{{ cliente.name }}</strong>
+                                        <br>
+                                        <small style="color: #777;">
+                                            {{ cliente.relationship || 'Cliente' }}
+                                        </small>
+                                    </td>
+
+                                    <td>
+                                        {{ cliente.email || 'Sem e-mail' }}
+                                        <br>
+                                        <small style="color: #777;">
+                                            {{ cliente.phone || 'Sem telefone' }}
+                                        </small>
+                                    </td>
+
+                                    <td>
+                                        {{ formatarData(cliente.lastSession) }}
+                                        <br>
+                                        <small style="color: #777;">
+                                            {{ cliente.lastSessionType }}
+                                        </small>
+                                    </td>
+
+                                    <td>{{ cliente.relationship }}</td>
+
+                                    <td>
+                                        {{ cliente.paymentStatus || 'Não se aplica' }}
+                                    </td>
+
+                                    <td>
+                                        <button class="secondary-button"
+                                                type="button"
+                                                style="padding: 6px 12px; font-size: 0.8rem;"
+                                                (click)="abrirFicha(cliente)">
+                                            Ver ficha
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ESTADO VAZIO -->
+                @if (clientesFiltrados.length === 0) {
+                    <div class="empty-state">
+                        <span>✳</span>
+                        <h3>Nenhum cliente encontrado</h3>
+                        <p>Altere os filtros ou cadastre um novo cliente.</p>
+                    </div>
+                }
+
+            </section>
+
+            <!-- RODAPÉ -->
+            <footer class="page-footer">
+                <span>© {{ anoAtual }} Letícia Gomes Fotografia</span>
+                <span>Organização e carinho em cada contato.</span>
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<!-- MODAL DE CADASTRO E EDIÇÃO -->
+<div class="modal-backdrop" [class.hidden]="!modalClienteAberto">
+
+    <section class="modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalTitle">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">FICHA DE CLIENTE</p>
+                <h2 id="modalTitle">
+                    {{ clienteEmEdicao ? 'Editar cliente' : 'Novo cliente' }}
+                </h2>
+            </div>
+
+            <button class="close-button"
+                    type="button"
+                    aria-label="Fechar"
+                    (click)="fecharModalCliente()">
+                ×
+            </button>
+        </div>
+
+        <form (ngSubmit)="salvarCliente()">
+
+            <div class="form-section">
+                <div class="form-grid">
+
+                    <label class="full-width">
+                        Nome completo *
+                        <input name="clientName"
+                               required
+                               maxlength="120"
+                               placeholder="Nome e sobrenome"
+                               [(ngModel)]="formCliente.name">
+                    </label>
+
+                    <label>
+                        E-mail
+                        <input name="clientEmail"
+                               type="email"
+                               maxlength="160"
+                               placeholder="cliente@email.com"
+                               [(ngModel)]="formCliente.email">
+                    </label>
+
+                    <label>
+                        Telefone / WhatsApp
+                        <input name="clientPhone"
+                               maxlength="40"
+                               placeholder="(11) 99999-9999"
+                               [(ngModel)]="formCliente.phone">
+                    </label>
+
+                    <label>
+                        Relacionamento
+                        <select name="clientRelationship"
+                                [(ngModel)]="formCliente.relationship">
+                            <option value="Lead">Em contato</option>
+                            <option value="Cliente">Cliente</option>
+                            <option value="Recorrente">Recorrente</option>
+                            <option value="Inativo">Sem atividade recente</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Data do último ensaio
+                        <input name="lastSession"
+                               type="date"
+                               [(ngModel)]="formCliente.lastSession">
+                    </label>
+
+                    <label class="full-width">
+                        Tipo de ensaio
+                        <input name="lastSessionType"
+                               maxlength="100"
+                               placeholder="Ex.: Ensaio individual"
+                               [(ngModel)]="formCliente.lastSessionType">
+                    </label>
+
+                    <label>
+                        Situação do pagamento
+                        <select name="paymentStatus"
+                                [(ngModel)]="formCliente.paymentStatus">
+                            <option>Não se aplica</option>
+                            <option>Pendente</option>
+                            <option>Parcial</option>
+                            <option>Pago</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Valor combinado (R$)
+                        <input name="paymentAmount"
+                               type="number"
+                               min="0"
+                               step="0.01"
+                               placeholder="0,00"
+                               [(ngModel)]="formCliente.paymentAmount">
+                    </label>
+
+                    <label class="full-width">
+                        Observações
+                        <textarea name="clientNotes"
+                                  rows="3"
+                                  maxlength="2000"
+                                  placeholder="Preferências e detalhes..."
+                                  [(ngModel)]="formCliente.notes"></textarea>
+                    </label>
+
+                </div>
+            </div>
+
+            @if (erroFormulario) {
+                <p class="form-error" role="alert">
+                    {{ erroFormulario }}
+                </p>
+            }
+
+            <div class="modal-actions">
+                <button class="secondary-button"
+                        type="button"
+                        (click)="fecharModalCliente()">
+                    Cancelar
+                </button>
+
+                <button class="primary-button" type="submit">
+                    Salvar cliente
+                </button>
+            </div>
+
+        </form>
+    </section>
+</div>
+
+<!-- MODAL DE FICHA DETALHADA -->
+<div class="modal-backdrop" [class.hidden]="!modalFichaAberto">
+
+    <section class="modal modal-profile"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="profileName">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">HISTÓRICO DE RELACIONAMENTO</p>
+
+                <h2 id="profileName">
+                    {{ clienteSelecionado?.name || 'Ficha do cliente' }}
+                </h2>
+
+                <p class="profile-contact">
+                    {{ clienteSelecionado?.email || 'Sem e-mail' }}
+                    ·
+                    {{ clienteSelecionado?.phone || 'Sem telefone' }}
+                </p>
+            </div>
+
+            <button class="close-button"
+                    type="button"
+                    aria-label="Fechar"
+                    (click)="fecharFicha()">
+                ×
+            </button>
+        </div>
+
+        <div class="profile-actions" style="margin-bottom: 20px;">
+            <button class="secondary-button"
+                    type="button"
+                    (click)="editarDaFicha()">
+                Editar cadastro
+            </button>
+
+            <button class="primary-button"
+                    type="button"
+                    (click)="mostrarFormularioHistorico()">
+                + Registrar interação
+            </button>
+        </div>
+
+        <div class="profile-columns"
+             style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+
+            <section class="panel" style="padding: 20px;">
+                <h3 style="font-size: 1rem; color: #490B0C; margin-bottom: 10px;">
+                    Dados cadastrais
+                </h3>
+
+                <div>
+                    <p>
+                        <strong>Relacionamento:</strong>
+                        {{ clienteSelecionado?.relationship }}
+                    </p>
+
+                    <p>
+                        <strong>Último Ensaio:</strong>
+                        {{ formatarData(clienteSelecionado?.lastSession) }}
+                        ({{ clienteSelecionado?.lastSessionType || 'Geral' }})
+                    </p>
+
+                    <p>
+                        <strong>Observações:</strong>
+                        {{ clienteSelecionado?.notes || 'Nenhuma observação registrada.' }}
+                    </p>
+                </div>
+            </section>
+
+            <section class="panel" style="padding: 20px;">
+                <h3 style="font-size: 1rem; color: #490B0C; margin-bottom: 10px;">
+                    Financeiro e Propostas
+                </h3>
+
+                <div>
+                    <p>
+                        <strong>Status Pagamento:</strong>
+                        {{ clienteSelecionado?.paymentStatus || 'Não se aplica' }}
+                    </p>
+
+                    <p>
+                        <strong>Valor Combinado:</strong>
+                        {{ formatarMoeda(clienteSelecionado?.paymentAmount) }}
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <!-- HISTÓRICO DE INTERAÇÕES -->
+        <section class="panel" style="padding: 20px;">
+
+            <h3 style="font-size: 1rem; color: #490B0C; margin-bottom: 15px;">
+                Histórico de interações
+            </h3>
+
+            @if (formularioHistoricoAberto) {
+                <form class="history-form"
+                      (ngSubmit)="salvarHistorico()"
+                      style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px;">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+
+                        <label>
+                            Data
+                            <input name="historyDate"
+                                   type="date"
+                                   required
+                                   [(ngModel)]="formHistorico.date">
+                        </label>
+
+                        <label>
+                            Tipo
+                            <select name="historyType"
+                                    [(ngModel)]="formHistorico.type">
+                                <option>Contato</option>
+                                <option>Proposta</option>
+                                <option>Ensaio</option>
+                                <option>Pagamento</option>
+                                <option>Observação</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <label>
+                        Descrição
+                        <textarea name="historyText"
+                                  rows="2"
+                                  required
+                                  placeholder="O que foi conversado..."
+                                  [(ngModel)]="formHistorico.text"></textarea>
+                    </label>
+
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="secondary-button"
+                                type="button"
+                                style="padding: 8px 16px;"
+                                (click)="cancelarHistorico()">
+                            Cancelar
+                        </button>
+
+                        <button class="primary-button"
+                                type="submit"
+                                style="padding: 8px 16px;">
+                            Salvar registro
+                        </button>
+                    </div>
+                </form>
+            }
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                @for (registro of historicoCliente; track registro.id) {
+                    <div class="history-item">
+                        <strong>{{ registro.type }}</strong>
+                        <small>{{ formatarData(registro.date) }}</small>
+                        <p>{{ registro.text }}</p>
+                    </div>
+                } @empty {
+                    <p>Nenhuma interação registrada.</p>
+                }
+            </div>
+
+        </section>
+    </section>
+</div>

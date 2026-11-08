@@ -1,0 +1,494 @@
+
+/* ==========================================================================
+   ESTILOS DA PÁGINA INICIAL DO PAINEL - LETÍCIA GOMES FOTOGRAFIA
+   ========================================================================== */
+
+/* Estilos específicos do componente */
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   LAYOUT PRINCIPAL
+   ========================================================================== */
+
+/* Layout principal do painel administrativo utilizando Flexbox */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   MENU LATERAL RETRÁTIL (Gaveta acionada pelo botão ☰)
+   ========================================================================== */
+
+/* Estilização da barra lateral de navegação */
+.sidebar {
+    width: 280px;
+    background-color: #F7F7F7;
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+/* Estado da barra lateral quando aberta */
+.sidebar.open {
+    transform: translateX(0);
+}
+
+/* Seção da marca/logotipo na barra lateral */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 32px 24px;
+    text-decoration: none;
+    color: #333333;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Imagem do logotipo da marca */
+.brand-logo-img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+}
+
+/* Título em negrito dentro da marca */
+.brand strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #490B0C;
+}
+
+/* Subtítulo ou slogan pequeno dentro da marca */
+.brand small {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    color: #6E859C;
+}
+
+/* Rótulo separador das seções do menu */
+.menu-label {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: #888888;
+    padding: 30px 24px 14px 24px;
+    font-weight: 600;
+}
+
+/* Container de navegação do menu */
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 16px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Estilo individual para cada link de navegação */
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    text-decoration: none;
+    color: #555555;
+    font-size: 0.92rem;
+    border-radius: 14px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o link de navegação */
+.nav-link:hover {
+    background-color: rgba(73, 11, 12, 0.04);
+    color: #490B0C;
+}
+
+/* Estado ativo do link de navegação (página atual) */
+.nav-link.active {
+    background-color: #490B0C;
+    color: #FFFFFF;
+    font-weight: 500;
+}
+
+/* Ícone dentro do link de navegação */
+.nav-icon {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+}
+
+/* Rodapé da barra lateral (perfil e botão de sair) */
+.sidebar-bottom {
+    padding: 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Seção de informações do perfil do usuário */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Círculo do avatar do perfil */
+.profile-avatar {
+    width: 42px;
+    height: 42px;
+    background-color: #EFEBE9;
+    color: #490B0C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Nome do usuário em negrito no perfil */
+.profile strong {
+    display: block;
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+/* Cargo ou email menor no perfil */
+.profile small {
+    font-size: 0.75rem;
+    color: #6E859C;
+}
+
+/* Botão de encerramento de sessão (Logout) */
+.logout-button {
+    width: 100%;
+    padding: 14px;
+    background-color: transparent;
+    border: 1px solid rgba(73, 11, 12, 0.2);
+    color: #490B0C;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o botão de sair */
+.logout-button:hover {
+    background-color: rgba(73, 11, 12, 0.05);
+}
+
+/* Overlay escuro de fundo para dispositivos móveis */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 95;
+}
+
+/* Exibe o overlay quando a classe 'hidden' é removida */
+.mobile-overlay:not(.hidden) {
+    display: block;
+}
+
+/* Classe utilitária para ocultar elementos completamente */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   CONTEÚDO PRINCIPAL E TOPBAR
+   ========================================================================== */
+
+/* Container principal do conteúdo à direita da barra lateral */
+.main-content {
+    margin-left: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Barra superior (Topbar) do painel */
+.topbar {
+    background-color: #F7F7F7;
+    padding: 0 45px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+/* Botão de menu (hambúrguer ☰) */
+.menu-button {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #490B0C;
+}
+
+/* Trilha de navegação estrutural (Breadcrumb) */
+.breadcrumb {
+    font-size: 0.92rem;
+    color: #666666;
+}
+
+/* Separador visual dentro do breadcrumb */
+.breadcrumb span {
+    color: #CCCCCC;
+    margin: 0 10px;
+}
+
+/* Link para visualizar o site público a partir do painel */
+.view-site {
+    text-decoration: none;
+    color: #490B0C;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    background-color: rgba(73, 11, 12, 0.06);
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o link de visualização do site */
+.view-site:hover {
+    background-color: rgba(73, 11, 12, 0.1);
+}
+
+/* Container interno onde ficam os conteúdos dinâmicos da página */
+.page-content {
+    padding: 50px 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Cabeçalho da página (título e ações) */
+.page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+/* Texto pequeno superior (Sobretítulo / Categoria) */
+.eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: #6E859C;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Título principal da página */
+.page-heading h1 {
+    font-family: 'Nonchalance', sans-serif;
+    color: #490B0C;
+    font-size: 3.2rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+    line-height: 1.1;
+}
+
+/* Descrição detalhada da página */
+.page-description {
+    font-size: 1.05rem;
+    color: #666666;
+}
+
+/* Botão secundário de ações */
+.secondary-button {
+    background-color: transparent;
+    color: #490B0C;
+    border: 1px solid rgba(73, 11, 12, 0.25);
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: block;
+}
+
+/* Efeito ao passar o mouse sobre o botão secundário */
+.secondary-button:hover {
+    background-color: rgba(73, 11, 12, 0.05);
+}
+
+/* Grade de resumo (Cards de Indicadores estatísticos) */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+/* Card individual de resumo de indicadores */
+.summary-card {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Rótulo descritivo pequeno dentro do card de resumo */
+.summary-card span {
+    display: block;
+    font-size: 0.78rem;
+    color: #6E859C;
+    margin-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Número ou valor principal em destaque no card de resumo */
+.summary-card strong {
+    font-size: 2.3rem;
+    font-weight: 600;
+    color: #490B0C;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* Texto menor de rodapé dentro do card de resumo */
+.summary-card small {
+    font-size: 0.8rem;
+    color: #888888;
+}
+
+/* Grade para organizar seções inferiores em duas colunas */
+.admin-grid-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+/* Painel de conteúdo genérico */
+.panel {
+    background-color: #FFFFFF;
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Título da seção dentro do painel */
+.section-heading h2 {
+    font-family: 'Nonchalance', sans-serif;
+    color: #490B0C;
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+/* Rodapé geral da página de conteúdo */
+.page-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+    color: #888;
+    padding-top: 25px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+/* Regras de responsividade para telas de até 900 pixels de largura */
+@media (max-width: 900px) {
+
+    .page-content {
+        padding: 25px 20px;
+        gap: 25px;
+    }
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+    .page-heading h1 {
+        font-size: 2.5rem;
+    }
+
+    .admin-grid-sections {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 600px) {
+
+    .sidebar {
+        width: min(280px, 85vw);
+    }
+
+    .topbar {
+        padding: 0 15px;
+        gap: 10px;
+    }
+
+    .breadcrumb {
+        font-size: 0.75rem;
+    }
+
+    .view-site {
+        font-size: 0.75rem;
+        padding: 10px 12px;
+    }
+
+    .page-content {
+        padding: 25px 15px;
+    }
+
+    .page-heading h1 {
+        font-size: 2.2rem;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        padding: 24px;
+    }
+
+    .panel {
+        padding: 25px 20px;
+    }
+
+    .section-heading h2 {
+        font-size: 1.7rem;
+    }
+
+    .page-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

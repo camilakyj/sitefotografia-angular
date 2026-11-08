@@ -1,0 +1,842 @@
+
+<!-- ==========================================================================
+     PÁGINA DE CONFIGURAÇÕES - LETÍCIA GOMES FOTOGRAFIA
+     ========================================================================== -->
+
+<!-- Layout principal do painel administrativo -->
+<div class="admin-layout">
+
+  <!-- ================================================================
+       MENU LATERAL RETRÁTIL
+       ================================================================ -->
+
+  <aside class="sidebar" [class.open]="menuAberto">
+
+    <!-- Logotipo e identificação -->
+    <a routerLink="/admin" class="brand" (click)="fecharMenu()">
+
+      <img
+        src="/imagens/logoleticia.png"
+        alt="Letícia Gomes Fotografia"
+        class="brand-logo-img"
+      >
+
+      <span>
+        <strong>Letícia Gomes</strong>
+        <small>PAINEL ADMINISTRATIVO</small>
+      </span>
+
+    </a>
+
+    <div class="menu-label">MENU PRINCIPAL</div>
+
+    <!-- Links de navegação utilizando as rotas do Angular -->
+    <nav class="navigation">
+
+      <a routerLink="/admin" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">⌂</span>
+        <span>01. Início</span>
+      </a>
+
+      <a routerLink="/solicitacoes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▤</span>
+        <span>02. Solicitações</span>
+      </a>
+
+      <a routerLink="/clientes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">♙</span>
+        <span>03. Clientes</span>
+      </a>
+
+      <a routerLink="/agenda" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▦</span>
+        <span>04. Agenda</span>
+      </a>
+
+      <a routerLink="/entregas" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▧</span>
+        <span>05. Entregas</span>
+      </a>
+
+      <a routerLink="/financeiro" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">R$</span>
+        <span>06. Financeiro</span>
+      </a>
+
+      <a routerLink="/editor-site" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">✎</span>
+        <span>07. Editar site</span>
+      </a>
+
+      <a routerLink="/configuracoes" class="nav-link active" (click)="fecharMenu()">
+        <span class="nav-icon">⚙</span>
+        <span>08. Configurações</span>
+      </a>
+
+    </nav>
+
+    <!-- Perfil da administradora no rodapé do menu -->
+    <div class="sidebar-bottom">
+
+      <div class="profile">
+
+        <div class="profile-avatar">LG</div>
+
+        <div>
+          <strong>{{ configuracoes.profile.nome }}</strong>
+          <small>{{ configuracoes.profile.cargo }}</small>
+        </div>
+
+      </div>
+
+      <!-- Botão para sair do painel -->
+      <button
+        type="button"
+        class="logout-button"
+        (click)="sair()"
+      >
+        ↗ Sair do painel
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- Fundo escuro exibido quando o menu lateral está aberto -->
+  <div
+    class="mobile-overlay"
+    [class.hidden]="!menuAberto"
+    (click)="fecharMenu()"
+  ></div>
+
+  <!-- ================================================================
+       CONTEÚDO PRINCIPAL
+       ================================================================ -->
+
+  <main class="main-content">
+
+    <!-- Barra superior -->
+    <header class="topbar">
+
+      <!-- Botão de abertura e fechamento do menu -->
+      <button
+        class="menu-button"
+        type="button"
+        aria-label="Abrir menu"
+        [attr.aria-expanded]="menuAberto"
+        (click)="alternarMenu()"
+      >
+        ☰
+      </button>
+
+      <div class="breadcrumb">
+        Painel administrativo <span>/</span> Configurações
+      </div>
+
+      <!-- Link para a página pública -->
+      <a routerLink="/home" class="view-site">
+        ↗ Ver site
+      </a>
+
+    </header>
+
+    <div class="page-content">
+
+      <!-- ==============================================================
+           CABEÇALHO DA PÁGINA
+           ============================================================== -->
+
+      <section class="page-heading">
+
+        <div>
+          <p class="eyebrow">SISTEMA E PREFERÊNCIAS</p>
+
+          <h1>Configurações</h1>
+
+          <p class="page-description">
+            Gerencie seu perfil, suas preferências e seus dados locais.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- ==============================================================
+           MENSAGENS DE FEEDBACK
+           ============================================================== -->
+
+      <!-- A mensagem é exibida quando alguma ação é concluída -->
+      <div
+        class="mensagem-feedback"
+        [class.hidden]="!mensagem"
+        [class.sucesso]="tipoMensagem === 'sucesso'"
+        [class.erro]="tipoMensagem === 'erro'"
+        role="status"
+        aria-live="polite"
+      >
+        {{ mensagem }}
+      </div>
+
+      <!-- ==============================================================
+           SEÇÃO 01 - PERFIL DA ADMINISTRADORA
+           ============================================================== -->
+
+      <section class="panel">
+
+        <div class="section-heading">
+
+          <div>
+            <p class="eyebrow">01. PERFIL</p>
+
+            <h2>Perfil da administradora</h2>
+
+            <p class="section-subtext">
+              Atualize as informações de identificação do painel.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Formulário para atualizar o perfil -->
+        <form (ngSubmit)="salvarPerfil()">
+
+          <div class="form-grid">
+
+            <!-- Nome completo -->
+            <label>
+              Nome completo *
+
+              <input
+                name="nome"
+                type="text"
+                required
+                maxlength="100"
+                [(ngModel)]="configuracoes.profile.nome"
+              >
+            </label>
+
+            <!-- Cargo ou função -->
+            <label>
+              Função
+
+              <input
+                name="cargo"
+                type="text"
+                maxlength="80"
+                [(ngModel)]="configuracoes.profile.cargo"
+              >
+            </label>
+
+            <!-- E-mail de login -->
+            <label class="full-width">
+              E-mail de login *
+
+              <input
+                name="email"
+                type="email"
+                required
+                maxlength="150"
+                [(ngModel)]="configuracoes.profile.email"
+              >
+            </label>
+
+          </div>
+
+          <!-- Salva as informações do perfil -->
+          <button
+            class="primary-button"
+            type="submit"
+            style="margin-top: 25px;"
+          >
+            Salvar perfil
+          </button>
+
+        </form>
+
+      </section>
+
+      <!-- ==============================================================
+           SEÇÃO 02 - DADOS DE CONTATO
+           ============================================================== -->
+
+      <section class="panel">
+
+        <div class="section-heading">
+
+          <div>
+            <p class="eyebrow">02. ATENDIMENTO</p>
+
+            <h2>Dados de contato</h2>
+
+            <p class="section-subtext">
+              Informações exibidas para facilitação de comunicação com clientes.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Formulário de informações de contato -->
+        <form (ngSubmit)="salvarContato()">
+
+          <div class="form-grid">
+
+            <!-- Telefone -->
+            <label>
+              Telefone
+
+              <input
+                name="telefone"
+                type="tel"
+                placeholder="(11) 99999-9999"
+                maxlength="25"
+                [(ngModel)]="configuracoes.contact.telefone"
+              >
+            </label>
+
+            <!-- Número do WhatsApp -->
+            <label>
+              WhatsApp com DDD
+
+              <input
+                name="whatsapp"
+                type="tel"
+                placeholder="5511999999999"
+                maxlength="20"
+                [(ngModel)]="configuracoes.contact.whatsapp"
+              >
+
+              <small class="field-help">
+                Número no formato internacional sem símbolos
+                (ex.: 5511999999999).
+              </small>
+            </label>
+
+            <!-- E-mail profissional -->
+            <label class="full-width">
+              E-mail profissional
+
+              <input
+                name="emailContato"
+                type="email"
+                placeholder="contato@exemplo.com"
+                maxlength="150"
+                [(ngModel)]="configuracoes.contact.emailContato"
+              >
+            </label>
+
+            <!-- Instagram -->
+            <label class="full-width">
+              Instagram
+
+              <input
+                name="instagram"
+                type="text"
+                placeholder="@seuusuario"
+                maxlength="100"
+                [(ngModel)]="configuracoes.contact.instagram"
+              >
+            </label>
+
+          </div>
+
+          <!-- Botão para salvar os contatos -->
+          <button
+            class="primary-button"
+            type="submit"
+            style="margin-top: 25px;"
+          >
+            Salvar contatos
+          </button>
+
+        </form>
+
+      </section>
+
+      <!-- ==============================================================
+           SEÇÃO 03 - SENHA E SEGURANÇA
+           ============================================================== -->
+
+      <section class="panel">
+
+        <div class="section-heading">
+
+          <div>
+            <p class="eyebrow">03. SEGURANÇA</p>
+
+            <h2>Senha e acesso</h2>
+
+            <p class="section-subtext">
+              Opções para segurança do painel administrativo.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Aviso sobre a segurança do protótipo -->
+        <div
+          class="demo-notice"
+          style="margin-bottom: 25px;"
+        >
+
+          <span>ⓘ</span>
+
+          <div>
+            <strong>Segurança do Protótipo:</strong>
+            A alteração de senha real depende de integração
+            com um servidor de autenticação. Os campos abaixo
+            demonstram apenas a validação do formulário.
+          </div>
+
+        </div>
+
+        <!-- Formulário para simular a alteração de senha -->
+        <form (ngSubmit)="alterarSenha()">
+
+          <div class="form-grid">
+
+            <!-- Senha atual -->
+            <label class="full-width">
+              Senha atual
+
+              <input
+                name="senhaAtual"
+                type="password"
+                autocomplete="current-password"
+                required
+                minlength="6"
+                [(ngModel)]="senhaAtual"
+              >
+            </label>
+
+            <!-- Nova senha -->
+            <label>
+              Nova senha
+
+              <input
+                name="senhaNova"
+                type="password"
+                autocomplete="new-password"
+                required
+                minlength="6"
+                [(ngModel)]="senhaNova"
+              >
+            </label>
+
+            <!-- Confirmação da nova senha -->
+            <label>
+              Confirmar nova senha
+
+              <input
+                name="confirmarSenha"
+                type="password"
+                autocomplete="new-password"
+                required
+                minlength="6"
+                [(ngModel)]="confirmarSenha"
+              >
+            </label>
+
+          </div>
+
+          <!-- Botão para validar a alteração de senha -->
+          <button
+            class="primary-button"
+            type="submit"
+            style="margin-top: 25px;"
+          >
+            Alterar senha
+          </button>
+
+        </form>
+
+        <hr class="section-divider">
+
+        <!-- Recuperação de senha simulada -->
+        <div class="recovery-row">
+
+          <div>
+            <h3>Esqueceu sua senha?</h3>
+
+            <p>
+              Simule a solicitação de recuperação para o e-mail cadastrado.
+            </p>
+          </div>
+
+          <button
+            class="secondary-button"
+            type="button"
+            (click)="solicitarRecuperacao()"
+          >
+            Solicitar recuperação
+          </button>
+
+        </div>
+
+      </section>
+
+      <!-- ==============================================================
+           SEÇÃO 04 - PREFERÊNCIAS DO SISTEMA
+           ============================================================== -->
+
+      <section class="panel">
+
+        <div class="section-heading">
+
+          <div>
+            <p class="eyebrow">04. SISTEMA</p>
+
+            <h2>Preferências do sistema</h2>
+
+            <p class="section-subtext">
+              Ajuste formatos e comportamentos de confirmação no painel.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Formulário das preferências -->
+        <form (ngSubmit)="salvarPreferencias()">
+
+          <div class="form-grid">
+
+            <!-- Formato de data -->
+            <label class="full-width">
+              Formato de data
+
+              <select
+                name="formatoData"
+                [(ngModel)]="configuracoes.preferences.formatoData"
+              >
+                <option value="dd/mm/aaaa">
+                  DD/MM/AAAA (padrão brasileiro)
+                </option>
+
+                <option value="aaaa-mm-dd">
+                  AAAA-MM-DD (padrão ISO)
+                </option>
+              </select>
+            </label>
+
+          </div>
+
+          <!-- Preferência para confirmar exclusões -->
+          <div class="switch-option">
+
+            <div>
+              <strong>Confirmar antes de excluir</strong>
+
+              <p>
+                Exibe caixas de alerta antes de apagar registros e itens.
+              </p>
+            </div>
+
+            <label class="switch">
+
+              <input
+                name="confirmarExclusao"
+                type="checkbox"
+                [(ngModel)]="configuracoes.preferences.confirmarExclusao"
+              >
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+          <!-- Preferência para exibir mensagens -->
+          <div class="switch-option">
+
+            <div>
+              <strong>Exibir mensagens de confirmação</strong>
+
+              <p>
+                Mostra notificações no topo ao concluir ações com sucesso.
+              </p>
+            </div>
+
+            <label class="switch">
+
+              <input
+                name="mensagensAtivas"
+                type="checkbox"
+                [(ngModel)]="configuracoes.preferences.mensagensAtivas"
+              >
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+          <!-- Salva as preferências -->
+          <button
+            class="primary-button"
+            type="submit"
+            style="margin-top: 25px;"
+          >
+            Salvar preferências
+          </button>
+
+        </form>
+
+      </section>
+
+      <!-- ==============================================================
+           SEÇÃO 05 - NOTIFICAÇÕES
+           ============================================================== -->
+
+      <section class="panel">
+
+        <div class="section-heading">
+
+          <div>
+            <p class="eyebrow">05. ALERTAS</p>
+
+            <h2>Notificações</h2>
+
+            <p class="section-subtext">
+              Escolha os alertas que deseja acompanhar visualmente no painel.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Formulário das notificações -->
+        <form (ngSubmit)="salvarNotificacoes()">
+
+          <!-- Novas solicitações -->
+          <div class="switch-option">
+
+            <div>
+              <strong>Novas solicitações</strong>
+
+              <p>
+                Avisos sobre novos orçamentos e agendamentos recebidos do site.
+              </p>
+            </div>
+
+            <label class="switch">
+
+              <input
+                name="notifSolicitacoes"
+                type="checkbox"
+                [(ngModel)]="configuracoes.notifications.notifSolicitacoes"
+              >
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+          <!-- Agendamentos -->
+          <div class="switch-option">
+
+            <div>
+              <strong>Agendamentos</strong>
+
+              <p>
+                Alertas para compromissos e ensaios próximos da data.
+              </p>
+            </div>
+
+            <label class="switch">
+
+              <input
+                name="notifAgenda"
+                type="checkbox"
+                [(ngModel)]="configuracoes.notifications.notifAgenda"
+              >
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+          <!-- Entregas -->
+          <div class="switch-option">
+
+            <div>
+              <strong>Entregas</strong>
+
+              <p>
+                Lembretes sobre galerias pendentes e prazos de edição.
+              </p>
+            </div>
+
+            <label class="switch">
+
+              <input
+                name="notifEntregas"
+                type="checkbox"
+                [(ngModel)]="configuracoes.notifications.notifEntregas"
+              >
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+          <!-- Financeiro -->
+          <div class="switch-option">
+
+            <div>
+              <strong>Financeiro</strong>
+
+              <p>
+                Avisos sobre pagamentos pendentes e lançamentos do mês.
+              </p>
+            </div>
+
+            <label class="switch">
+
+              <input
+                name="notifFinanceiro"
+                type="checkbox"
+                [(ngModel)]="configuracoes.notifications.notifFinanceiro"
+              >
+
+              <span class="slider"></span>
+
+            </label>
+
+          </div>
+
+          <!-- Salva as preferências de notificações -->
+          <button
+            class="primary-button"
+            type="submit"
+            style="margin-top: 25px;"
+          >
+            Salvar notificações
+          </button>
+
+        </form>
+
+      </section>
+
+      <!-- ==============================================================
+           SEÇÃO 06 - BACKUP E RESTAURAÇÃO
+           ============================================================== -->
+
+      <section class="panel">
+
+        <div class="section-heading">
+
+          <div>
+            <p class="eyebrow">06. DADOS LOCAIS</p>
+
+            <h2>Backup e restauração</h2>
+
+            <p class="section-subtext">
+              Exporte uma cópia completa do seu sistema ou restaure dados salvos.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Explicação sobre o backup -->
+        <div
+          class="demo-notice"
+          style="margin-bottom: 25px;"
+        >
+
+          <span>ⓘ</span>
+
+          <div>
+            <strong>Como funciona?</strong>
+            O backup exporta um arquivo JSON com solicitações,
+            clientes, agenda, entregas, lançamentos financeiros
+            e configurações armazenados neste navegador.
+          </div>
+
+        </div>
+
+        <!-- Exportação de dados -->
+        <div class="backup-actions">
+
+          <div>
+            <h3>Exportar dados</h3>
+
+            <p>
+              Faça o download do arquivo de backup contendo
+              todo o estado do painel.
+            </p>
+          </div>
+
+          <!-- Botão para gerar o backup -->
+          <button
+            class="primary-button"
+            type="button"
+            (click)="exportarBackup()"
+          >
+            Exportar dados (.json)
+          </button>
+
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Restauração de dados -->
+        <div class="backup-actions">
+
+          <div>
+            <h3>Restaurar dados</h3>
+
+            <p>
+              Importe um arquivo JSON de backup
+              exportado anteriormente por este painel.
+            </p>
+          </div>
+
+          <div
+            style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;"
+          >
+
+            <!-- Seleção do arquivo de backup -->
+            <input
+              #arquivoBackup
+              type="file"
+              accept=".json,application/json"
+              style="max-width: 260px;"
+            >
+
+            <!-- Botão para restaurar o backup -->
+            <button
+              class="secondary-button"
+              type="button"
+              (click)="restaurarBackup()"
+            >
+              Restaurar dados
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==============================================================
+           RODAPÉ
+           ============================================================== -->
+
+      <footer class="page-footer">
+
+        <span>
+          © {{ anoAtual }} Letícia Gomes Fotografia
+        </span>
+
+        <span>
+          Configurações do sistema central.
+        </span>
+
+      </footer>
+
+    </div>
+
+  </main>
+
+</div>
+

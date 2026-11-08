@@ -1,0 +1,894 @@
+
+<!-- ==========================================================================
+     PÁGINA EDITAR SITE - LETÍCIA GOMES FOTOGRAFIA
+     ========================================================================== -->
+
+<div class="admin-layout">
+
+  <!-- MENU LATERAL RETRÁTIL -->
+  <aside class="sidebar" [class.open]="menuAberto">
+
+    <!-- LOGOTIPO E IDENTIFICAÇÃO -->
+    <a routerLink="/admin" class="brand" (click)="fecharMenu()">
+      <img
+        src="/imagens/logoleticia.png"
+        alt="Letícia Gomes Fotografia"
+        class="brand-logo-img"
+      >
+
+      <span>
+        <strong>Letícia Gomes</strong>
+        <small>PAINEL ADMINISTRATIVO</small>
+      </span>
+    </a>
+
+    <div class="menu-label">MENU PRINCIPAL</div>
+
+    <!-- LINKS DE NAVEGAÇÃO DO ANGULAR -->
+    <nav class="navigation">
+
+      <a routerLink="/admin" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">⌂</span>
+        <span>01. Início</span>
+      </a>
+
+      <a routerLink="/solicitacoes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▤</span>
+        <span>02. Solicitações</span>
+      </a>
+
+      <a routerLink="/clientes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">♙</span>
+        <span>03. Clientes</span>
+      </a>
+
+      <a routerLink="/agenda" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▦</span>
+        <span>04. Agenda</span>
+      </a>
+
+      <a routerLink="/entregas" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▧</span>
+        <span>05. Entregas</span>
+      </a>
+
+      <a routerLink="/financeiro" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">R$</span>
+        <span>06. Financeiro</span>
+      </a>
+
+      <a routerLink="/editor-site" class="nav-link active" (click)="fecharMenu()">
+        <span class="nav-icon">✎</span>
+        <span>07. Editar site</span>
+      </a>
+
+      <a routerLink="/configuracoes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">⚙</span>
+        <span>08. Configurações</span>
+      </a>
+
+    </nav>
+
+    <!-- PERFIL DA ADMINISTRADORA -->
+    <div class="sidebar-bottom">
+
+      <div class="profile">
+        <div class="profile-avatar">LG</div>
+
+        <div>
+          <strong>Letícia Gomes</strong>
+          <small>Administradora</small>
+        </div>
+      </div>
+
+      <!-- BOTÃO DE SAIR -->
+      <button
+        type="button"
+        class="logout-button"
+        (click)="sair()"
+      >
+        ↗ Sair do painel
+      </button>
+
+    </div>
+  </aside>
+
+  <!-- FUNDO ESCURO EXIBIDO QUANDO O MENU ESTÁ ABERTO -->
+  <div
+    class="mobile-overlay"
+    [class.hidden]="!menuAberto"
+    (click)="fecharMenu()"
+  ></div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-content">
+
+    <!-- BARRA SUPERIOR -->
+    <header class="topbar">
+
+      <!-- BOTÃO PARA ABRIR OU FECHAR O MENU -->
+      <button
+        class="menu-button"
+        type="button"
+        aria-label="Abrir menu"
+        [attr.aria-expanded]="menuAberto"
+        (click)="alternarMenu()"
+      >
+        ☰
+      </button>
+
+      <div class="breadcrumb">
+        Painel administrativo <span>/</span> Editar site
+      </div>
+
+      <!-- LINK PARA O SITE PÚBLICO -->
+      <a routerLink="/home" class="view-site">
+        ↗ Ver site
+      </a>
+
+    </header>
+
+    <div class="page-content">
+
+      <!-- ================================================================
+           CABEÇALHO DA PÁGINA
+           ================================================================ -->
+
+      <section class="page-heading">
+
+        <div>
+          <p class="eyebrow">PERSONALIZAÇÃO DO SITE</p>
+
+          <h1>Editar meu site</h1>
+
+          <p class="page-description">
+            Atualize os conteúdos e confira suas alterações antes de publicar.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- ================================================================
+           STATUS DE PUBLICAÇÃO
+           ================================================================ -->
+
+      <div
+        class="editor-status panel"
+        style="padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;"
+      >
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+
+          <!-- INDICADOR COLORIDO DO STATUS -->
+          <span
+            class="status-dot"
+            [style.background-color]="ultimaPublicacao ? '#2E7D32' : '#E65100'"
+            style="width: 10px; height: 10px; border-radius: 50%;"
+          ></span>
+
+          <!-- TEXTO DO STATUS -->
+          <span style="font-weight: 500; font-size: 0.92rem;">
+            {{ statusPublicacao }}
+          </span>
+
+        </div>
+
+        <!-- DATA DO ÚLTIMO SALVAMENTO -->
+        <span style="color: #666; font-size: 0.88rem;">
+          {{ ultimoSalvamento }}
+        </span>
+
+      </div>
+
+      <!-- ================================================================
+           LAYOUT DO EDITOR
+           ================================================================ -->
+
+      <section
+        class="editor-layout"
+        style="display: grid; grid-template-columns: 1fr 420px; gap: 30px; align-items: start;"
+      >
+
+        <!-- ==============================================================
+             PAINEL DE EDIÇÃO
+             ============================================================== -->
+
+        <div class="editor-panel panel">
+
+          <div class="section-heading" style="margin-bottom: 25px;">
+
+            <div>
+              <p class="eyebrow">CONTEÚDO</p>
+              <h2>O que você deseja editar?</h2>
+            </div>
+
+          </div>
+
+          <!-- ============================================================
+               ABAS DE NAVEGAÇÃO DO EDITOR
+               ============================================================ -->
+
+          <nav
+            class="editor-tabs"
+            aria-label="Seções do editor"
+            style="display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;"
+          >
+
+            <button
+              type="button"
+              class="secondary-button editor-tab"
+              [class.active]="abaAtiva === 'home'"
+              (click)="selecionarAba('home')"
+              style="flex: 1; min-width: 110px;"
+            >
+              Página inicial
+            </button>
+
+            <button
+              type="button"
+              class="secondary-button editor-tab"
+              [class.active]="abaAtiva === 'about'"
+              (click)="selecionarAba('about')"
+              style="flex: 1; min-width: 110px;"
+            >
+              Sobre mim
+            </button>
+
+            <button
+              type="button"
+              class="secondary-button editor-tab"
+              [class.active]="abaAtiva === 'portfolio'"
+              (click)="selecionarAba('portfolio')"
+              style="flex: 1; min-width: 110px;"
+            >
+              Portfólio
+            </button>
+
+            <button
+              type="button"
+              class="secondary-button editor-tab"
+              [class.active]="abaAtiva === 'texts'"
+              (click)="selecionarAba('texts')"
+              style="flex: 1; min-width: 110px;"
+            >
+              Outros textos
+            </button>
+
+          </nav>
+
+          <!-- ============================================================
+               FORMULÁRIO PRINCIPAL
+               ============================================================ -->
+
+          <form (ngSubmit)="salvarRascunho()">
+
+            <!-- ==========================================================
+                 ABA 1 - PÁGINA INICIAL
+                 ========================================================== -->
+
+            <section
+              class="editor-section"
+              [class.hidden]="abaAtiva !== 'home'"
+            >
+
+              <div class="section-intro" style="margin-bottom: 20px;">
+
+                <h3 style="font-family: 'Nonchalance', sans-serif; font-size: 1.8rem; color: #490B0C; font-weight: normal;">
+                  Página inicial
+                </h3>
+
+                <p style="color: #666; font-size: 0.9rem;">
+                  Edite a apresentação principal e os conteúdos de destaque.
+                </p>
+
+              </div>
+
+              <div
+                class="form-grid"
+                style="display: grid; grid-template-columns: 1fr; gap: 20px;"
+              >
+
+                <!-- TEXTO DE APRESENTAÇÃO -->
+                <label>
+                  Texto de apresentação
+
+                  <input
+                    type="text"
+                    name="homeEyebrow"
+                    maxlength="100"
+                    placeholder="Ex.: FOTOGRAFIA DE AFETO E LEVEZA"
+                    [(ngModel)]="conteudo.homeEyebrow"
+                  >
+                </label>
+
+                <!-- FRASE PRINCIPAL -->
+                <label>
+                  Frase principal
+
+                  <textarea
+                    name="homeQuote"
+                    rows="4"
+                    maxlength="700"
+                    placeholder="Frase de impacto da home..."
+                    [(ngModel)]="conteudo.homeQuote"
+                  ></textarea>
+                </label>
+
+                <!-- TEXTO DO BOTÃO -->
+                <label>
+                  Texto do botão
+
+                  <input
+                    type="text"
+                    name="homeButton"
+                    maxlength="80"
+                    placeholder="Ex.: Solicitar proposta"
+                    [(ngModel)]="conteudo.homeButton"
+                  >
+                </label>
+
+                <!-- DESTINO DO BOTÃO -->
+                <label>
+                  Destino do botão
+
+                  <input
+                    type="text"
+                    name="homeButtonLink"
+                    maxlength="250"
+                    placeholder="Ex.: /solicitacoes"
+                    [(ngModel)]="conteudo.homeButtonLink"
+                  >
+                </label>
+
+                <!-- TÍTULO DA PRÉVIA DO PORTFÓLIO -->
+                <label>
+                  Título da prévia do portfólio
+
+                  <input
+                    type="text"
+                    name="portfolioHeading"
+                    maxlength="160"
+                    [(ngModel)]="conteudo.portfolioHeading"
+                  >
+                </label>
+
+                <!-- DESCRIÇÃO DA PRÉVIA -->
+                <label>
+                  Descrição da prévia
+
+                  <textarea
+                    name="portfolioDescription"
+                    rows="3"
+                    maxlength="500"
+                    [(ngModel)]="conteudo.portfolioDescription"
+                  ></textarea>
+                </label>
+
+                <!-- TÍTULO DA SEÇÃO SOBRE MIM -->
+                <label>
+                  Título da seção Sobre mim
+
+                  <input
+                    type="text"
+                    name="aboutHeadingHome"
+                    maxlength="160"
+                    [(ngModel)]="conteudo.aboutHeadingHome"
+                  >
+                </label>
+
+              </div>
+
+            </section>
+
+            <!-- ==========================================================
+                 ABA 2 - SOBRE MIM
+                 ========================================================== -->
+
+            <section
+              class="editor-section"
+              [class.hidden]="abaAtiva !== 'about'"
+            >
+
+              <div class="section-intro" style="margin-bottom: 20px;">
+
+                <h3 style="font-family: 'Nonchalance', sans-serif; font-size: 1.8rem; color: #490B0C; font-weight: normal;">
+                  Sobre mim
+                </h3>
+
+                <p style="color: #666; font-size: 0.9rem;">
+                  Edite sua biografia e apresentação pessoal.
+                </p>
+
+              </div>
+
+              <div
+                class="form-grid"
+                style="display: grid; grid-template-columns: 1fr; gap: 20px;"
+              >
+
+                <!-- TÍTULO DA APRESENTAÇÃO -->
+                <label>
+                  Título da apresentação
+
+                  <input
+                    type="text"
+                    name="aboutHeading"
+                    maxlength="160"
+                    [(ngModel)]="conteudo.aboutHeading"
+                  >
+                </label>
+
+                <!-- SUBTÍTULO -->
+                <label>
+                  Subtítulo
+
+                  <input
+                    type="text"
+                    name="aboutSubtitle"
+                    maxlength="160"
+                    [(ngModel)]="conteudo.aboutSubtitle"
+                  >
+                </label>
+
+                <!-- BIOGRAFIA -->
+                <label>
+                  Biografia
+
+                  <textarea
+                    name="aboutBiography"
+                    rows="10"
+                    maxlength="10000"
+                    placeholder="Sua história e trajetória..."
+                    [(ngModel)]="conteudo.aboutBiography"
+                  ></textarea>
+                </label>
+
+              </div>
+
+            </section>
+
+            <!-- ==========================================================
+                 ABA 3 - PORTFÓLIO
+                 ========================================================== -->
+
+            <section
+              class="editor-section"
+              [class.hidden]="abaAtiva !== 'portfolio'"
+            >
+
+              <div class="section-intro" style="margin-bottom: 20px;">
+
+                <h3 style="font-family: 'Nonchalance', sans-serif; font-size: 1.8rem; color: #490B0C; font-weight: normal;">
+                  Galeria do portfólio
+                </h3>
+
+                <p style="color: #666; font-size: 0.9rem;">
+                  Gerencie as fotografias públicas exibidas no site.
+                </p>
+
+              </div>
+
+              <!-- BARRA DE CONTROLE DAS FOTOGRAFIAS -->
+              <div
+                class="portfolio-toolbar"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap;"
+              >
+
+                <!-- CONTADOR DE FOTOGRAFIAS -->
+                <span style="font-size: 0.9rem; color: #6E859C; font-weight: 600;">
+                  {{ conteudo.portfolioPhotos.length }}
+                  {{ conteudo.portfolioPhotos.length === 1 ? 'fotografia' : 'fotografias' }}
+                </span>
+
+                <!-- BOTÃO PARA ADICIONAR FOTO -->
+                <button
+                  class="secondary-button"
+                  type="button"
+                  (click)="adicionarFoto()"
+                >
+                  + Adicionar fotografia
+                </button>
+
+              </div>
+
+              <!-- LISTA DE FOTOGRAFIAS -->
+              <div
+                class="portfolio-editor-list"
+                style="display: flex; flex-direction: column; gap: 15px;"
+              >
+
+                @for (foto of conteudo.portfolioPhotos; track foto.id; let i = $index) {
+
+                  <div
+                    class="portfolio-item"
+                    style="display: flex; align-items: center; justify-content: space-between; background: #F7F7F7; padding: 12px 16px; border-radius: 12px; gap: 15px; flex-wrap: wrap;"
+                  >
+
+                    <!-- INFORMAÇÕES DA FOTOGRAFIA -->
+                    <div>
+
+                      <strong>{{ foto.title }}</strong>
+
+                      <br>
+
+                      <small style="color: #777;">
+                        Categoria: {{ foto.category }}
+                      </small>
+
+                    </div>
+
+                    <!-- BOTÕES PARA ORGANIZAR E REMOVER -->
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+
+                      <!-- MOVER PARA CIMA -->
+                      <button
+                        type="button"
+                        class="secondary-button"
+                        title="Mover para cima"
+                        [disabled]="i === 0"
+                        (click)="moverFoto(i, -1)"
+                        style="padding: 6px 12px; font-size: 0.8rem;"
+                      >
+                        ↑
+                      </button>
+
+                      <!-- MOVER PARA BAIXO -->
+                      <button
+                        type="button"
+                        class="secondary-button"
+                        title="Mover para baixo"
+                        [disabled]="i === conteudo.portfolioPhotos.length - 1"
+                        (click)="moverFoto(i, 1)"
+                        style="padding: 6px 12px; font-size: 0.8rem;"
+                      >
+                        ↓
+                      </button>
+
+                      <!-- REMOVER FOTOGRAFIA -->
+                      <button
+                        type="button"
+                        class="secondary-button"
+                        (click)="removerFoto(i)"
+                        style="padding: 6px 12px; font-size: 0.8rem; color: #C62828; border-color: rgba(198,40,40,0.3);"
+                      >
+                        Remover
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                } @empty {
+
+                  <!-- MENSAGEM QUANDO NÃO HÁ FOTOGRAFIAS -->
+                  <p style="color: #888; font-size: 0.9rem;">
+                    Nenhuma fotografia cadastrada no portfólio.
+                  </p>
+
+                }
+
+              </div>
+
+            </section>
+
+            <!-- ==========================================================
+                 ABA 4 - OUTROS TEXTOS
+                 ========================================================== -->
+
+            <section
+              class="editor-section"
+              [class.hidden]="abaAtiva !== 'texts'"
+            >
+
+              <div class="section-intro" style="margin-bottom: 20px;">
+
+                <h3 style="font-family: 'Nonchalance', sans-serif; font-size: 1.8rem; color: #490B0C; font-weight: normal;">
+                  Outros textos e contatos
+                </h3>
+
+                <p style="color: #666; font-size: 0.9rem;">
+                  Atualize as chamadas, contatos e rodapé do site.
+                </p>
+
+              </div>
+
+              <div
+                class="form-grid"
+                style="display: grid; grid-template-columns: 1fr; gap: 20px;"
+              >
+
+                <!-- TÍTULO DA SEÇÃO COMO FUNCIONA -->
+                <label>
+                  Título de "Como funciona"
+
+                  <input
+                    type="text"
+                    name="processHeading"
+                    maxlength="180"
+                    [(ngModel)]="conteudo.processHeading"
+                  >
+                </label>
+
+                <!-- DESCRIÇÃO DO ATENDIMENTO -->
+                <label>
+                  Descrição de atendimento
+
+                  <textarea
+                    name="processDescription"
+                    rows="3"
+                    maxlength="600"
+                    [(ngModel)]="conteudo.processDescription"
+                  ></textarea>
+                </label>
+
+                <!-- E-MAIL DE CONTATO -->
+                <label>
+                  E-mail de contato
+
+                  <input
+                    type="email"
+                    name="contactEmail"
+                    maxlength="180"
+                    [(ngModel)]="conteudo.contactEmail"
+                  >
+                </label>
+
+                <!-- INSTAGRAM -->
+                <label>
+                  Link do Instagram
+
+                  <input
+                    type="url"
+                    name="contactInstagram"
+                    maxlength="500"
+                    [(ngModel)]="conteudo.contactInstagram"
+                  >
+                </label>
+
+                <!-- TEXTO DO RODAPÉ -->
+                <label>
+                  Texto do rodapé
+
+                  <textarea
+                    name="footerDescription"
+                    rows="3"
+                    maxlength="500"
+                    [(ngModel)]="conteudo.footerDescription"
+                  ></textarea>
+                </label>
+
+              </div>
+
+            </section>
+
+            <!-- ==========================================================
+                 MENSAGEM DE ERRO OU FEEDBACK
+                 ========================================================== -->
+
+            @if (mensagemFeedback) {
+
+              <p
+                class="form-error"
+                role="alert"
+                style="margin-top: 25px;"
+              >
+                {{ mensagemFeedback }}
+              </p>
+
+            }
+
+            <!-- ==========================================================
+                 BOTÕES DE SALVAMENTO E PUBLICAÇÃO
+                 ========================================================== -->
+
+            <div
+              class="editor-actions"
+              style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; flex-wrap: wrap; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 25px;"
+            >
+
+              <!-- DESCARTAR ALTERAÇÕES -->
+              <button
+                class="secondary-button"
+                type="button"
+                (click)="descartarAlteracoes()"
+              >
+                Descartar
+              </button>
+
+              <!-- SALVAR RASCUNHO -->
+              <button
+                class="secondary-button"
+                type="submit"
+              >
+                Salvar rascunho
+              </button>
+
+              <!-- PUBLICAR ALTERAÇÕES -->
+              <button
+                class="primary-button"
+                type="button"
+                (click)="abrirModalPublicacao()"
+              >
+                Publicar alterações
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+        <!-- ==============================================================
+             PAINEL DE PRÉ-VISUALIZAÇÃO
+             ============================================================== -->
+
+        <aside
+          class="preview-panel panel"
+          style="position: sticky; top: 105px;"
+        >
+
+          <div class="section-heading" style="margin-bottom: 20px;">
+
+            <div>
+              <p class="eyebrow">VISUALIZAÇÃO</p>
+              <h2>Site atual</h2>
+            </div>
+
+            <!-- ABRIR O SITE EM NOVA ABA -->
+            <a
+              href="/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-link"
+              style="font-size: 0.85rem;"
+            >
+              Abrir em nova aba ↗
+            </a>
+
+          </div>
+
+          <!-- SIMULAÇÃO DE JANELA DO NAVEGADOR -->
+          <div
+            class="preview-browser"
+            style="border: 1px solid rgba(0,0,0,0.1); border-radius: 14px; overflow: hidden; background: #FFF;"
+          >
+
+            <!-- BARRA SUPERIOR DA PRÉVIA -->
+            <div
+              style="background: #EFEBE9; padding: 10px 15px; display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #666;"
+            >
+
+              <span style="width: 8px; height: 8px; background: #C62828; border-radius: 50%; display: inline-block;"></span>
+
+              <span style="width: 8px; height: 8px; background: #E65100; border-radius: 50%; display: inline-block;"></span>
+
+              <span style="width: 8px; height: 8px; background: #2E7D32; border-radius: 50%; display: inline-block;"></span>
+
+              <span style="margin-left: 10px; font-weight: 500;">
+                /home
+              </span>
+
+            </div>
+
+            <!-- PRÉ-VISUALIZAÇÃO DO SITE PÚBLICO -->
+            <iframe
+              #visualizacaoSite
+              src="/home"
+              title="Visualização do site atual"
+              style="width: 100%; height: 380px; border: none;"
+            ></iframe>
+
+          </div>
+
+          <!-- BOTÃO PARA ATUALIZAR A PRÉVIA -->
+          <div style="margin-top: 20px;">
+
+            <button
+              type="button"
+              class="secondary-button"
+              style="width: 100%; text-align: center;"
+              (click)="atualizarVisualizacao()"
+            >
+              Atualizar visualização
+            </button>
+
+          </div>
+
+        </aside>
+
+      </section>
+
+      <!-- ================================================================
+           RODAPÉ
+           ================================================================ -->
+
+      <footer
+        class="page-footer"
+        style="display: flex; justify-content: space-between; font-size: 0.88rem; color: #888; padding-top: 25px; border-top: 1px solid rgba(0, 0, 0, 0.04);"
+      >
+
+        <span>
+          © {{ anoAtual }} Letícia Gomes Fotografia
+        </span>
+
+        <span>
+          Seu site com a sua identidade.
+        </span>
+
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==========================================================================
+     MODAL DE CONFIRMAÇÃO DE PUBLICAÇÃO
+     ========================================================================== -->
+
+<div
+  class="modal-backdrop"
+  [class.hidden]="!modalPublicacaoAberto"
+>
+
+  <section
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="publishModalTitle"
+  >
+
+    <!-- CABEÇALHO DO MODAL -->
+    <div class="modal-header">
+
+      <div>
+        <p class="eyebrow">REVISÃO FINAL</p>
+
+        <h2 id="publishModalTitle">
+          Publicar as alterações?
+        </h2>
+      </div>
+
+      <!-- FECHAR MODAL -->
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Fechar"
+        (click)="fecharModalPublicacao()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <!-- MENSAGEM DE CONFIRMAÇÃO -->
+    <p style="margin-bottom: 25px; line-height: 1.6; color: #555;">
+      Você está prestes a atualizar a versão pública do site.
+      Todos os textos e portfólio salvos passarão a ser exibidos
+      para os visitantes quando o site público estiver conectado
+      aos dados publicados.
+    </p>
+
+    <!-- BOTÕES DE CONFIRMAÇÃO -->
+    <div class="modal-actions">
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="fecharModalPublicacao()"
+      >
+        Voltar para revisar
+      </button>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="confirmarPublicacao()"
+      >
+        Confirmar publicação
+      </button>
+
+    </div>
+
+  </section>
+
+</div>

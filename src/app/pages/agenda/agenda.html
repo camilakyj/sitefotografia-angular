@@ -1,0 +1,632 @@
+
+<!-- ==========================================================================
+     PÁGINA DE AGENDA E PLANNER - LETÍCIA GOMES FOTOGRAFIA
+     ========================================================================== -->
+
+<div class="admin-layout">
+
+    <!-- MENU LATERAL -->
+    <aside class="sidebar" [class.open]="menuAberto">
+
+        <a routerLink="/admin" class="brand" (click)="fecharMenu()">
+            <img src="/imagens/logoleticia.png"
+                 alt="Letícia Gomes Fotografia"
+                 class="brand-logo-img">
+            <span>
+                <strong>Letícia Gomes</strong>
+                <small>PAINEL ADMINISTRATIVO</small>
+            </span>
+        </a>
+
+        <div class="menu-label">MENU PRINCIPAL</div>
+
+        <nav class="navigation">
+            <a routerLink="/admin" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">⌂</span><span>01. Início</span>
+            </a>
+
+            <a routerLink="/solicitacoes" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▤</span><span>02. Solicitações</span>
+            </a>
+
+            <a routerLink="/clientes" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">♙</span><span>03. Clientes</span>
+            </a>
+
+            <a routerLink="/agenda" class="nav-link active" (click)="fecharMenu()">
+                <span class="nav-icon">▦</span><span>04. Agenda</span>
+            </a>
+
+            <a routerLink="/entregas" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">▧</span><span>05. Entregas</span>
+            </a>
+
+            <a routerLink="/financeiro" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">R$</span><span>06. Financeiro</span>
+            </a>
+
+            <a routerLink="/editor-site" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">✎</span><span>07. Editar site</span>
+            </a>
+
+            <a routerLink="/configuracoes" class="nav-link" (click)="fecharMenu()">
+                <span class="nav-icon">⚙</span><span>08. Configurações</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="profile">
+                <div class="profile-avatar">LG</div>
+                <div>
+                    <strong>Letícia Gomes</strong>
+                    <small>Administradora</small>
+                </div>
+            </div>
+
+            <button type="button" class="logout-button" (click)="sair()">
+                ↗ Sair do painel
+            </button>
+        </div>
+    </aside>
+
+    <!-- OVERLAY DO MENU -->
+    <div class="mobile-overlay"
+         [class.hidden]="!menuAberto"
+         (click)="fecharMenu()">
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- BARRA SUPERIOR -->
+        <header class="topbar">
+            <button type="button"
+                    class="menu-button"
+                    aria-label="Abrir menu"
+                    [attr.aria-expanded]="menuAberto"
+                    (click)="alternarMenu()">
+                ☰
+            </button>
+
+            <div class="breadcrumb">
+                Painel administrativo <span>/</span> Agenda e planner
+            </div>
+
+            <a routerLink="/home" class="view-site">↗ Ver site</a>
+        </header>
+
+        <div class="page-content">
+
+            <!-- CABEÇALHO -->
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow">ORGANIZAÇÃO DO ESTÚDIO</p>
+                    <h1>Agenda e planner</h1>
+                    <p class="page-description">
+                        Ensaios, prazos e pequenas tarefas em um só lugar.
+                    </p>
+                </div>
+
+                <button type="button"
+                        class="primary-button"
+                        (click)="novoCompromisso()">
+                    <span>+</span> Novo compromisso
+                </button>
+            </section>
+
+            <!-- BOAS-VINDAS -->
+            <section class="welcome-row">
+                <div>
+                    <h2>Seu tempo, do seu jeito.</h2>
+                    <p>Mantenha seus compromissos e tarefas organizados com leveza.</p>
+                </div>
+
+                <div class="today-chip">
+                    <span class="today-dot"></span>
+                    <span>{{ hojeLabel }}</span>
+                </div>
+            </section>
+
+            <!-- INDICADORES -->
+            <section class="summary-grid">
+
+                <article class="summary-card">
+                    <span>Compromissos neste mês</span>
+                    <strong>{{ totalMes }}</strong>
+                    <small>Total agendado</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Ensaios confirmados</span>
+                    <strong>{{ totalEnsaios }}</strong>
+                    <small>Sessões marcadas</small>
+                </article>
+
+                <article class="summary-card">
+                    <span>Tarefas pendentes</span>
+                    <strong>{{ tarefasPendentes }}</strong>
+                    <small>Para concluir</small>
+                </article>
+
+            </section>
+
+            <!-- CALENDÁRIO / PLANNER -->
+            <section class="panel planner-card">
+
+                <div class="calendar-toolbar">
+
+                    <div class="date-navigation">
+                        <button type="button"
+                                class="icon-button"
+                                aria-label="Período anterior"
+                                (click)="periodoAnterior()">‹</button>
+
+                        <button type="button"
+                                class="icon-button"
+                                aria-label="Próximo período"
+                                (click)="proximoPeriodo()">›</button>
+
+                        <h2>{{ tituloPeriodo }}</h2>
+
+                        <button type="button"
+                                class="secondary-button"
+                                style="padding: 8px 16px;"
+                                (click)="irParaHoje()">
+                            Hoje
+                        </button>
+                    </div>
+
+                    <div class="view-switch">
+                        <button type="button"
+                                class="view-btn"
+                                [class.selected]="visualizacao === 'month'"
+                                (click)="alterarVisualizacao('month')">
+                            Mês
+                        </button>
+
+                        <button type="button"
+                                class="view-btn"
+                                [class.selected]="visualizacao === 'week'"
+                                (click)="alterarVisualizacao('week')">
+                            Semana
+                        </button>
+
+                        <button type="button"
+                                class="view-btn"
+                                [class.selected]="visualizacao === 'day'"
+                                (click)="alterarVisualizacao('day')">
+                            Dia
+                        </button>
+
+                        <button type="button"
+                                class="view-btn"
+                                [class.selected]="visualizacao === 'tasks'"
+                                (click)="alterarVisualizacao('tasks')">
+                            Planner
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LEGENDA -->
+                <div class="calendar-legend">
+                    <span><i class="legend-dot shoot"></i> Ensaio</span>
+                    <span><i class="legend-dot meeting"></i> Reunião</span>
+                    <span><i class="legend-dot deadline"></i> Prazo de edição</span>
+                    <span><i class="legend-dot task"></i> Tarefa</span>
+                </div>
+
+                <!-- VISUALIZAÇÃO MENSAL -->
+                @if (visualizacao === 'month') {
+                    <div class="calendar-content">
+                        <div class="calendar-grid-month">
+
+                            @for (diaSemana of diasSemana; track $index) {
+                                <div class="calendar-day-header">
+                                    {{ diaSemana }}
+                                </div>
+                            }
+
+                            @for (dia of diasCalendario; track $index) {
+                                <div class="calendar-day-cell"
+                                     [class.other-month]="!dia.data"
+                                     [class.is-today]="dia.hoje">
+
+                                    @if (dia.data) {
+                                        <span class="day-number">{{ dia.numero }}</span>
+
+                                        @for (evento of dia.eventos; track evento.id) {
+                                            <div class="event-chip"
+                                                 [ngClass]="'type-' + evento.type"
+                                                 [title]="evento.title"
+                                                 (click)="abrirDetalhes(evento)">
+                                                {{ evento.title }}
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                }
+
+                <!-- VISUALIZAÇÃO SEMANAL -->
+                @if (visualizacao === 'week') {
+                    <div class="calendar-content">
+                        <div class="calendar-grid-month">
+
+                            @for (diaSemana of diasSemana; track $index) {
+                                <div class="calendar-day-header">
+                                    {{ diaSemana }}
+                                </div>
+                            }
+
+                            @for (dia of diasCalendario; track $index) {
+                                <div class="calendar-day-cell"
+                                     [class.is-today]="dia.hoje">
+
+                                    <span class="day-number">{{ dia.numero }}</span>
+
+                                    @for (evento of dia.eventos; track evento.id) {
+                                        <div class="event-chip"
+                                             [ngClass]="'type-' + evento.type"
+                                             [title]="evento.title"
+                                             (click)="abrirDetalhes(evento)">
+                                            {{ evento.title }}
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- VISUALIZAÇÃO DIÁRIA -->
+                @if (visualizacao === 'day') {
+                    <div class="calendar-content">
+                        <div class="upcoming-list">
+
+                            <h3>{{ tituloPeriodo }}</h3>
+
+                            @if (eventosDoPeriodo.length === 0) {
+                                <p>Nenhum compromisso para este dia.</p>
+                            }
+
+                            @for (evento of eventosDoPeriodo; track evento.id) {
+                                <div class="event-card-item">
+                                    <div>
+                                        <strong>{{ evento.title }}</strong>
+                                        <p>
+                                            {{ evento.time || '09:00' }}
+                                            — {{ nomeTipo(evento.type) }}
+                                        </p>
+                                    </div>
+
+                                    <button type="button"
+                                            class="secondary-button"
+                                            (click)="abrirDetalhes(evento)">
+                                        Ver
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- VISUALIZAÇÃO PLANNER -->
+                @if (visualizacao === 'tasks') {
+                    <div class="calendar-content">
+                        <div class="task-preview">
+
+                            @if (tarefasPlanner.length === 0) {
+                                <p>Nenhuma tarefa cadastrada.</p>
+                            }
+
+                            @for (tarefa of tarefasPlanner; track tarefa.id) {
+                                <div class="event-card-item">
+                                    <label style="flex-direction: row; align-items: center;">
+                                        <input type="checkbox"
+                                               style="width: auto;"
+                                               [checked]="tarefa.completed"
+                                               (change)="alternarTarefa(tarefa)">
+                                        <span [style.text-decoration]="tarefa.completed ? 'line-through' : 'none'">
+                                            {{ tarefa.title }}
+                                        </span>
+                                    </label>
+
+                                    <button type="button"
+                                            class="secondary-button"
+                                            (click)="abrirDetalhes(tarefa)">
+                                        Ver
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+            </section>
+
+            <!-- PRÓXIMOS COMPROMISSOS E TAREFAS -->
+            <section class="admin-grid-sections bottom-grid">
+
+                <div class="panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">O QUE VEM AÍ</p>
+                            <h2>Próximos compromissos</h2>
+                        </div>
+                    </div>
+
+                    <div class="upcoming-list">
+                        @if (proximosCompromissos.length === 0) {
+                            <p style="color:#888; font-size:0.85rem;">
+                                Nenhum próximo compromisso agendado.
+                            </p>
+                        }
+
+                        @for (evento of proximosCompromissos; track evento.id) {
+                            <div class="event-card-item">
+                                <div>
+                                    <strong>{{ evento.title }}</strong>
+                                    <small style="display:block; color:#777;">
+                                        {{ evento.date }} às {{ evento.time || '09:00' }}
+                                        ({{ nomeTipo(evento.type) }})
+                                    </small>
+                                </div>
+
+                                <button type="button"
+                                        class="secondary-button"
+                                        style="padding:4px 10px; font-size:0.75rem;"
+                                        (click)="abrirDetalhes(evento)">
+                                    Ver
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">PEQUENOS PASSOS</p>
+                            <h2>Lista de tarefas</h2>
+                        </div>
+
+                        <button type="button"
+                                class="text-link"
+                                (click)="novaTarefa()">
+                            + Nova tarefa
+                        </button>
+                    </div>
+
+                    <div class="task-preview">
+                        @if (tarefasResumo.length === 0) {
+                            <p style="color:#888; font-size:0.85rem;">
+                                Nenhuma tarefa cadastrada.
+                            </p>
+                        }
+
+                        @for (tarefa of tarefasResumo; track tarefa.id) {
+                            <div class="event-card-item">
+                                <label style="flex-direction:row; align-items:center; gap:8px;">
+                                    <input type="checkbox"
+                                           style="width:auto;"
+                                           [checked]="tarefa.completed"
+                                           (change)="alternarTarefa(tarefa)">
+
+                                    <span [style.text-decoration]="tarefa.completed ? 'line-through' : 'none'">
+                                        {{ tarefa.title }}
+                                    </span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- RODAPÉ -->
+            <footer class="page-footer">
+                <span>© {{ anoAtual }} Letícia Gomes Fotografia</span>
+                <span>Organização de tempo com carinho e precisão.</span>
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<!-- MODAL DE CADASTRO E EDIÇÃO -->
+<div class="modal-backdrop" [class.hidden]="!modalAberto">
+    <section class="modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalTitle">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">PLANEJAMENTO</p>
+                <h2 id="modalTitle">
+                    {{ editando ? 'Editar compromisso' : 'Novo compromisso' }}
+                </h2>
+            </div>
+
+            <button type="button"
+                    class="close-button"
+                    aria-label="Fechar"
+                    (click)="fecharModal()">
+                ×
+            </button>
+        </div>
+
+        <form (ngSubmit)="salvarCompromisso()">
+
+            <div class="form-grid">
+
+                <label class="full-width">
+                    Título do compromisso *
+                    <input type="text"
+                           name="titulo"
+                           [(ngModel)]="formEvento.title"
+                           required
+                           maxlength="100"
+                           placeholder="Ex.: Ensaio de família">
+                </label>
+
+                <label>
+                    Tipo *
+                    <select name="tipo"
+                            [(ngModel)]="formEvento.type"
+                            required>
+                        <option value="shoot">Ensaio confirmado</option>
+                        <option value="meeting">Reunião</option>
+                        <option value="deadline">Prazo de edição</option>
+                        <option value="task">Tarefa</option>
+                    </select>
+                </label>
+
+                <label>
+                    Cliente
+                    <select name="cliente" [(ngModel)]="formEvento.clientId">
+                        <option value="">Sem cliente vinculado</option>
+
+                        @for (cliente of clientes; track cliente.id) {
+                            <option [value]="cliente.id">
+                                {{ cliente.name }}
+                            </option>
+                        }
+                    </select>
+                </label>
+
+                <label>
+                    Data *
+                    <input type="date"
+                           name="data"
+                           [(ngModel)]="formEvento.date"
+                           required>
+                </label>
+
+                <label>
+                    Horário
+                    <input type="time"
+                           name="horario"
+                           [(ngModel)]="formEvento.time">
+                </label>
+
+                <label>
+                    Duração
+                    <select name="duracao" [(ngModel)]="formEvento.duration">
+                        <option value="30">30 minutos</option>
+                        <option value="60">1 hora</option>
+                        <option value="90">1h30</option>
+                        <option value="120">2 horas</option>
+                        <option value="180">3 horas</option>
+                        <option value="240">4 horas</option>
+                        <option value="0">Dia inteiro / sem horário</option>
+                    </select>
+                </label>
+
+                <label class="full-width">
+                    Observações
+                    <textarea name="observacoes"
+                              rows="3"
+                              [(ngModel)]="formEvento.notes"
+                              placeholder="Local, preparação, lembretes...">
+                    </textarea>
+                </label>
+
+                <label class="full-width"
+                       style="flex-direction:row; align-items:center; gap:10px; cursor:pointer;">
+                    <input type="checkbox"
+                           name="concluido"
+                           style="width:auto;"
+                           [(ngModel)]="formEvento.completed">
+                    <span>Marcar como concluído</span>
+                </label>
+
+            </div>
+
+            @if (erroFormulario) {
+                <p class="form-error" role="alert">
+                    {{ erroFormulario }}
+                </p>
+            }
+
+            <div class="modal-actions">
+                <button type="button"
+                        class="secondary-button"
+                        (click)="fecharModal()">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="primary-button">
+                    Salvar compromisso
+                </button>
+            </div>
+
+        </form>
+    </section>
+</div>
+
+<!-- MODAL DE DETALHES -->
+<div class="modal-backdrop" [class.hidden]="!detalhesAbertos">
+    <section class="modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="detailTitle">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">DETALHES</p>
+                <h2 id="detailTitle">
+                    {{ eventoSelecionado?.title || 'Compromisso' }}
+                </h2>
+            </div>
+
+            <button type="button"
+                    class="close-button"
+                    aria-label="Fechar"
+                    (click)="fecharDetalhes()">
+                ×
+            </button>
+        </div>
+
+        @if (eventoSelecionado) {
+            <div style="margin-bottom:25px; line-height:1.6;">
+                <p><strong>Tipo:</strong> {{ nomeTipo(eventoSelecionado.type) }}</p>
+                <p><strong>Data e Horário:</strong>
+                    {{ eventoSelecionado.date }} às {{ eventoSelecionado.time || '09:00' }}
+                </p>
+                <p><strong>Duração:</strong>
+                    {{ formatarDuracao(eventoSelecionado.duration) }}
+                </p>
+                <p><strong>Observações:</strong>
+                    {{ eventoSelecionado.notes || 'Nenhuma observação registrada.' }}
+                </p>
+            </div>
+        }
+
+        <div class="modal-actions">
+            <button type="button"
+                    class="secondary-button"
+                    style="border-color:#C62828; color:#C62828;"
+                    (click)="excluirCompromisso()">
+                Excluir
+            </button>
+
+            <div style="flex:1;"></div>
+
+            <button type="button"
+                    class="secondary-button"
+                    (click)="fecharDetalhes()">
+                Fechar
+            </button>
+
+            <button type="button"
+                    class="primary-button"
+                    (click)="editarCompromisso()">
+                Editar
+            </button>
+        </div>
+    </section>
+</div>

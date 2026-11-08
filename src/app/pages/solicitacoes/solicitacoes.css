@@ -1,0 +1,799 @@
+/* ==========================================================================
+   ESTILOS DA PÁGINA DE SOLICITAÇÕES - LETÍCIA GOMES FOTOGRAFIA
+   ========================================================================== */
+
+/* Reset aplicado somente aos elementos deste componente Angular */
+:host, :host * {
+    box-sizing: border-box;
+    /* Remove a margem padrão de todos os elementos */
+    margin: 0;
+    /* Remove o preenchimento padrão de todos os elementos */
+    padding: 0;
+}
+
+/* Estilo base do componente Angular (substitui o seletor body original) */
+:host {
+    display: block;
+    /* Define a cor de fundo cinza claro */
+    background-color: #F7F7F7;
+    /* Define a família de fontes principal como 'Poppins' com fallback para sans-serif */
+    font-family: 'Poppins', sans-serif;
+    /* Define a cor padrão do texto como cinza escuro */
+    color: #333333;
+    /* Garante que o corpo ocupe pelo menos 100% da altura da tela */
+    min-height: 100vh;
+}
+
+/* Define o layout administrativo geral usando o modelo flexbox */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   MENU LATERAL RETRÁTIL (Gaveta com abertura por botão ☰)
+   ========================================================================== */
+
+/* Estiliza a barra lateral de navegação (sidebar) como uma gaveta fixa */
+.sidebar {
+    /* Define a largura fixa da barra lateral */
+    width: 280px;
+    /* Define a cor de fundo */
+    background-color: #F7F7F7;
+    /* Adiciona uma borda sutil à direita */
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+    /* Habilita o flexbox em coluna */
+    display: flex;
+    flex-direction: column;
+    /* Fixa a barra lateral na tela */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    /* Define a ordem de empilhamento para ficar acima de outros elementos */
+    z-index: 100;
+    /* Move a barra lateral totalmente para fora da tela à esquerda por padrão */
+    transform: translateX(-100%); /* Começa recolhido */
+    /* Adiciona transição suave para a animação de deslizar */
+    transition: transform 0.3s ease;
+}
+
+/* Estiliza a barra lateral quando ela está aberta */
+.sidebar.open {
+    /* Desliza a barra lateral para dentro da tela (posição original) */
+    transform: translateX(0); /* Desliza para dentro da tela */
+}
+
+/* Estiliza a seção da marca/logotipo na barra lateral */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 32px 24px;
+    text-decoration: none;
+    color: #333333;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Estiliza a imagem da logo na marca */
+.brand-logo-img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+}
+
+/* Estiliza o texto em negrito da marca */
+.brand strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #490B0C;
+}
+
+/* Estiliza o texto secundário (small) da marca */
+.brand small {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    color: #6E859C;
+}
+
+/* Estiliza o rótulo de seção do menu */
+.menu-label {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: #888888;
+    padding: 30px 24px 14px 24px;
+    font-weight: 600;
+}
+
+/* Estiliza o container de navegação da barra lateral */
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 16px;
+    flex: 1;
+    /* Permite rolagem vertical caso os itens ultrapassem a altura */
+    overflow-y: auto;
+}
+
+/* Estiliza cada link de navegação do menu */
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    text-decoration: none;
+    color: #555555;
+    font-size: 0.92rem;
+    border-radius: 14px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Define os estilos ao passar o mouse sobre o link de navegação */
+.nav-link:hover {
+    background-color: rgba(73, 11, 12, 0.04);
+    color: #490B0C;
+}
+
+/* Estiliza o link de navegação ativo/selecionado */
+.nav-link.active {
+    background-color: #490B0C;
+    color: #FFFFFF;
+    font-weight: 500;
+}
+
+/* Estiliza o ícone dentro do link de navegação */
+.nav-icon {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+}
+
+/* Estiliza a parte inferior da barra lateral (perfil e botão de sair) */
+.sidebar-bottom {
+    padding: 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Estiliza o container do perfil do usuário */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Estiliza o avatar/foto de perfil */
+.profile-avatar {
+    width: 42px;
+    height: 42px;
+    background-color: #EFEBE9;
+    color: #490B0C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Estiliza o nome do usuário no perfil */
+.profile strong {
+    display: block;
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+/* Estiliza a descrição secundária do perfil */
+.profile small {
+    font-size: 0.75rem;
+    color: #6E859C;
+}
+
+/* Estiliza o botão de saída (logout) */
+.logout-button {
+    width: 100%;
+    padding: 14px;
+    background-color: transparent;
+    border: 1px solid rgba(73, 11, 12, 0.2);
+    color: #490B0C;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Estiliza o botão de logout ao passar o mouse */
+.logout-button:hover {
+    background-color: rgba(73, 11, 12, 0.05);
+}
+
+/* Overlay escuro de fundo para dispositivos móveis */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 95;
+}
+
+/* Torna o overlay visível quando não possui a classe 'hidden' */
+.mobile-overlay:not(.hidden) {
+    display: block;
+}
+
+/* ==========================================================================
+   CONTEÚDO PRINCIPAL E TOPBAR
+   ========================================================================== */
+
+/* Estiliza o container principal de conteúdo à direita da barra lateral */
+.main-content {
+    margin-left: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Estiliza a barra superior (topbar) */
+.topbar {
+    background-color: #F7F7F7;
+    padding: 0 45px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+/* Estiliza o botão do menu (hambúrguer) */
+.menu-button {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #490B0C;
+}
+
+/* Estiliza o caminho de navegação (breadcrumb) */
+.breadcrumb {
+    font-size: 0.92rem;
+    color: #666666;
+}
+
+/* Estiliza o separador dentro do breadcrumb */
+.breadcrumb span {
+    color: #CCCCCC;
+    margin: 0 10px;
+}
+
+/* Estiliza o link para visualizar o site público */
+.view-site {
+    text-decoration: none;
+    color: #490B0C;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    background-color: rgba(73, 11, 12, 0.06);
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o link de visualização do site */
+.view-site:hover {
+    background-color: rgba(73, 11, 12, 0.1);
+}
+
+/* Estiliza o container de conteúdo principal da página */
+.page-content {
+    padding: 50px 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Respiro amplo e arejado */
+}
+
+/* Cabeçalho da página */
+.page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+/* Estiliza o texto descritivo superior (eyebrow) */
+.eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: #6E859C;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Estiliza o título principal da página */
+.page-heading h1 {
+    font-family: 'Nonchalance', sans-serif;
+    color: #490B0C;
+    font-size: 3.2rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+    line-height: 1.1;
+}
+
+/* Estiliza a descrição textual da página */
+.page-description {
+    font-size: 1.05rem;
+    color: #666666;
+}
+
+/* Estiliza o botão de ação principal */
+.primary-button {
+    background-color: #490B0C;
+    color: #FFFFFF;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o botão principal */
+.primary-button:hover {
+    background-color: #350708;
+}
+
+/* Estiliza o botão de ação secundário */
+.secondary-button {
+    background-color: transparent;
+    color: #490B0C;
+    border: 1px solid rgba(73, 11, 12, 0.25);
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o botão secundário */
+.secondary-button:hover {
+    background-color: rgba(73, 11, 12, 0.05);
+}
+
+/* Estiliza botões em formato de texto simples */
+.text-link {
+    background: none;
+    border: none;
+    color: #490B0C;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Grade de Resumo (Summary Grid) */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+/* Estiliza cada cartão individual de resumo */
+.summary-card {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Estiliza rótulos dentro dos cartões de resumo */
+.summary-card span {
+    display: block;
+    font-size: 0.78rem;
+    color: #6E859C;
+    margin-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Estiliza os números de destaque (negrito) nos cartões de resumo */
+.summary-card strong {
+    font-size: 2.3rem;
+    font-weight: 600;
+    color: #490B0C;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* Estiliza o texto menor nos cartões de resumo */
+.summary-card small {
+    font-size: 0.8rem;
+    color: #888888;
+}
+
+/* Fluxo Comercial (Pipeline) */
+.panel {
+    background-color: #FFFFFF;
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Estiliza o cabeçalho de seções */
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Estiliza o título de nível 2 das seções */
+.section-heading h2 {
+    font-family: 'Nonchalance', sans-serif;
+    color: #490B0C;
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+/* Estiliza o container dos passos do pipeline */
+.pipeline-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Estiliza cada etapa individual do pipeline */
+.pipeline-step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background-color: #F7F7F7;
+    padding: 16px 22px;
+    border-radius: 16px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #490B0C;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Estiliza o indicador numérico da etapa */
+.step-number {
+    width: 30px;
+    height: 30px;
+    background-color: #490B0C;
+    color: #FFFFFF;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Estiliza as setas conectoras do pipeline */
+.pipeline-arrow {
+    color: #6E859C;
+    font-size: 1.2rem;
+}
+
+/* Filtros e Tabela */
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Estiliza o campo de busca */
+.search-field {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    align-items: center;
+    background-color: #F7F7F7;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 0 16px;
+    gap: 10px;
+}
+
+/* Estiliza o input de texto do campo de busca */
+.search-field input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    background: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    outline: none;
+}
+
+/* Estiliza os elementos select de filtros */
+.filters select {
+    padding: 12px 18px;
+    background-color: #F7F7F7;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Estiliza o container wrapper da tabela para permitir rolagem horizontal */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+/* Estiliza a tabela de dados */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+/* Estiliza os cabeçalhos das colunas da tabela (th) */
+th {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    color: #6E859C;
+    text-transform: uppercase;
+    padding: 16px 18px;
+    border-bottom: 2px solid #F7F7F7;
+    font-weight: 600;
+}
+
+/* Estiliza as células de dados da tabela (td) */
+td {
+    padding: 18px;
+    font-size: 0.92rem;
+    border-bottom: 1px solid #F7F7F7;
+    color: #444444;
+}
+
+/* Efeito ao passar o mouse sobre as linhas do corpo da tabela */
+tbody tr:hover {
+    background-color: #FAFAFA;
+}
+
+/* Estiliza o contador de resultados */
+.result-count {
+    font-size: 0.88rem;
+    color: #6E859C;
+    font-weight: 500;
+}
+
+/* Badges de Status */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+/* Cores específicas para cada tipo de status de badge */
+.status-badge.nova { background-color: #F3E5F5; color: #7B1FA2; }
+.status-badge.negociacao { background-color: #E3F2FD; color: #1565C0; }
+.status-badge.proposta { background-color: #FFF3E0; color: #E65100; }
+.status-badge.confirmada { background-color: #E8F5E9; color: #2E7D32; }
+.status-badge.encerrada { background-color: #FFEBEE; color: #C62828; }
+
+/* Estiliza o container dos botões de ação na tabela */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* Estiliza cada botão de ícone individual */
+.icon-button {
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #555;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o botão de ícone */
+.icon-button:hover {
+    background-color: #490B0C;
+    color: #FFF;
+    border-color: #490B0C;
+}
+
+/* Modais */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Estiliza o container principal do modal */
+.modal {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 680px;
+    padding: 40px;
+    border-radius: 24px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Estiliza o cabeçalho do modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+/* Estiliza o título do modal */
+.modal-header h2 {
+    font-family: 'Nonchalance', sans-serif;
+    color: #490B0C;
+    font-size: 2.3rem;
+    font-weight: normal;
+}
+
+/* Estiliza o botão de fechar o modal */
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #888;
+}
+
+/* Estiliza seções dentro do formulário */
+.form-section {
+    margin-bottom: 25px;
+}
+
+/* Estiliza títulos de seções do formulário */
+.form-section h3 {
+    font-size: 0.95rem;
+    color: #490B0C;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+/* Estiliza a grade do formulário */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Classe utilitária para elementos ocuparem toda a largura da grade */
+.full-width { grid-column: 1 / -1; }
+
+/* Estiliza rótulos (labels) de formulário */
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #444;
+}
+
+/* Estiliza inputs, selects e textareas do formulário */
+input, select, textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    background-color: #FAFAFA;
+    outline: none;
+}
+
+/* Estiliza campos de formulário quando estão em foco */
+input:focus, select:focus, textarea:focus {
+    border-color: #490B0C;
+    background-color: #FFFFFF;
+}
+
+/* Estiliza a caixa de erro do formulário */
+.form-error {
+    background-color: #FFEBEE;
+    color: #C62828;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    margin-bottom: 20px;
+}
+
+/* Estiliza o container de botões de ação do modal */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* Estiliza o estado vazio (sem registros) */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #888;
+}
+
+/* Estiliza o ícone dentro do estado vazio */
+.empty-state span {
+    font-size: 2rem;
+    color: #490B0C;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Estiliza o título do estado vazio */
+.empty-state h3 {
+    font-family: 'Nonchalance', sans-serif;
+    font-size: 1.8rem;
+    color: #490B0C;
+    margin-bottom: 5px;
+}
+
+/* Classe utilitária para ocultar elementos */
+.hidden { display: none !important; }
+
+/* Estiliza o rodapé da página */
+.page-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+    color: #888;
+    padding-top: 25px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Regras de responsividade para telas de até 900px de largura */
+@media (max-width: 900px) {
+    .page-content { padding: 25px 20px; gap: 25px; }
+    .topbar { padding: 0 20px; }
+    .page-heading h1 { font-size: 2.5rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .modal { padding: 25px 20px; }
+}

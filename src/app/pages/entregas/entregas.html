@@ -1,0 +1,654 @@
+
+<!-- ==========================================================================
+     PÁGINA DE ENTREGAS - LETÍCIA GOMES FOTOGRAFIA
+     ========================================================================== -->
+
+<div class="admin-layout">
+
+  <!-- MENU LATERAL (Sidebar retrátil) -->
+  <aside class="sidebar" [class.open]="menuAberto">
+
+    <a routerLink="/admin" class="brand" (click)="fecharMenu()">
+      <img
+        src="/imagens/logoleticia.png"
+        alt="Letícia Gomes Fotografia"
+        class="brand-logo-img"
+      >
+      <span>
+        <strong>Letícia Gomes</strong>
+        <small>PAINEL ADMINISTRATIVO</small>
+      </span>
+    </a>
+
+    <div class="menu-label">MENU PRINCIPAL</div>
+
+    <nav class="navigation">
+      <a routerLink="/admin" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">⌂</span><span>01. Início</span>
+      </a>
+
+      <a routerLink="/solicitacoes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▤</span><span>02. Solicitações</span>
+      </a>
+
+      <a routerLink="/clientes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">♙</span><span>03. Clientes</span>
+      </a>
+
+      <a routerLink="/agenda" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">▦</span><span>04. Agenda</span>
+      </a>
+
+      <a routerLink="/entregas" class="nav-link active" (click)="fecharMenu()">
+        <span class="nav-icon">▧</span><span>05. Entregas</span>
+      </a>
+
+      <a routerLink="/financeiro" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">R$</span><span>06. Financeiro</span>
+      </a>
+
+      <a routerLink="/editor-site" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">✎</span><span>07. Editar site</span>
+      </a>
+
+      <a routerLink="/configuracoes" class="nav-link" (click)="fecharMenu()">
+        <span class="nav-icon">⚙</span><span>08. Configurações</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="profile">
+        <div class="profile-avatar">LG</div>
+        <div>
+          <strong>Letícia Gomes</strong>
+          <small>Administradora</small>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="logout-button"
+        (click)="sair()"
+      >
+        ↗ Sair do painel
+      </button>
+    </div>
+  </aside>
+
+  <!-- Overlay escuro para fechar o menu -->
+  <div
+    class="mobile-overlay"
+    [class.hidden]="!menuAberto"
+    (click)="fecharMenu()"
+  ></div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button
+        class="menu-button"
+        type="button"
+        aria-label="Abrir menu"
+        [attr.aria-expanded]="menuAberto"
+        (click)="alternarMenu()"
+      >
+        ☰
+      </button>
+
+      <div class="breadcrumb">
+        Painel administrativo <span>/</span> Entregas
+      </div>
+
+      <a routerLink="/home" class="view-site">
+        ↗ Ver site
+      </a>
+    </header>
+
+    <div class="page-content">
+
+      <!-- CABEÇALHO DA PÁGINA -->
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">GESTÃO FOTOGRÁFICA</p>
+          <h1>Entregas</h1>
+          <p class="page-description">
+            Do tratamento das imagens à entrega final da galeria.
+          </p>
+        </div>
+
+        <button
+          class="primary-button"
+          type="button"
+          (click)="novoTrabalho()"
+        >
+          <span>+</span> Novo trabalho
+        </button>
+      </section>
+
+      <!-- CARDS DE INDICADORES -->
+      <section class="summary-grid">
+
+        <article class="summary-card">
+          <span>Total de trabalhos</span>
+          <strong>{{ totalTrabalhos }}</strong>
+          <small>Trabalhos cadastrados</small>
+        </article>
+
+        <article class="summary-card">
+          <span>Em produção</span>
+          <strong>{{ emProducao }}</strong>
+          <small>Produção, edição e revisão</small>
+        </article>
+
+        <article class="summary-card">
+          <span>Prazos próximos</span>
+          <strong>{{ prazosProximos }}</strong>
+          <small>Vencem nos próximos 7 dias</small>
+        </article>
+
+        <article class="summary-card">
+          <span>Entregues</span>
+          <strong>{{ entregues }}</strong>
+          <small>Trabalhos concluídos</small>
+        </article>
+
+      </section>
+
+      <!-- PAINEL DA TABELA -->
+      <section class="panel">
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ACOMPANHAMENTO</p>
+            <h2>Todos os trabalhos</h2>
+          </div>
+
+          <span class="result-count">
+            {{ trabalhosFiltrados.length }}
+            {{ trabalhosFiltrados.length === 1 ? 'trabalho' : 'trabalhos' }}
+          </span>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="filters">
+
+          <div class="search-field">
+            <span>⌕</span>
+            <input
+              type="search"
+              placeholder="Buscar por nome, cliente ou ensaio..."
+              [(ngModel)]="busca"
+              (ngModelChange)="filtrarTrabalhos()"
+            >
+          </div>
+
+          <select
+            aria-label="Filtrar por status"
+            [(ngModel)]="filtroStatus"
+            (ngModelChange)="filtrarTrabalhos()"
+          >
+            <option value="">Todos os status</option>
+            <option value="Produção">Em produção</option>
+            <option value="Edição">Em edição</option>
+            <option value="Revisão">Em revisão</option>
+            <option value="Pronta para entrega">Pronta para entrega</option>
+            <option value="Entregue">Entregue</option>
+          </select>
+
+          <select
+            aria-label="Filtrar por prazo"
+            [(ngModel)]="filtroPrazo"
+            (ngModelChange)="filtrarTrabalhos()"
+          >
+            <option value="">Todos os prazos</option>
+            <option value="upcoming">Próximos 7 dias</option>
+            <option value="overdue">Atrasados</option>
+            <option value="no-date">Sem prazo</option>
+          </select>
+
+          <button
+            class="text-link"
+            type="button"
+            (click)="limparFiltros()"
+          >
+            Limpar filtros
+          </button>
+        </div>
+
+        <!-- TABELA DE ENTREGAS -->
+        @if (trabalhosFiltrados.length > 0) {
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Trabalho / Cliente</th>
+                  <th>Prazo</th>
+                  <th>Status</th>
+                  <th>Entrega</th>
+                  <th style="text-align: right;">Ações</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (trabalho of trabalhosFiltrados; track trabalho.id) {
+                  <tr>
+                    <td>
+                      <strong>{{ trabalho.title }}</strong>
+                      <br>
+                      <small style="color: #777;">
+                        {{ trabalho.clientName || 'Sem cliente' }}
+                      </small>
+                    </td>
+
+                    <td>
+                      {{ formatarData(trabalho.deadline) }}
+                    </td>
+
+                    <td>
+                      <span
+                        class="status-badge"
+                        [ngClass]="classeStatus(trabalho.status)"
+                      >
+                        {{ trabalho.status }}
+                      </span>
+                    </td>
+
+                    <td>
+                      @if (linkSeguro(trabalho.link); as link) {
+                        <a
+                          [href]="link"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-link"
+                          style="font-size: 0.85rem;"
+                        >
+                          ↗ Acessar link
+                        </a>
+                      } @else {
+                        <span style="color: #AAA;">Sem link</span>
+                      }
+                    </td>
+
+                    <td style="text-align: right;">
+                      <button
+                        type="button"
+                        class="secondary-button"
+                        style="padding: 6px 12px; font-size: 0.8rem;"
+                        (click)="abrirDetalhes(trabalho)"
+                      >
+                        Ver ficha
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+
+        <!-- ESTADO VAZIO -->
+        @if (trabalhosFiltrados.length === 0) {
+          <div class="empty-state">
+            <span>✳</span>
+            <h3>Nenhum trabalho encontrado</h3>
+            <p>
+              Cadastre um ensaio para começar a acompanhar
+              a produção e a entrega.
+            </p>
+
+            <button
+              class="secondary-button"
+              type="button"
+              style="margin-top: 15px;"
+              (click)="novoTrabalho()"
+            >
+              Cadastrar primeiro trabalho
+            </button>
+          </div>
+        }
+
+      </section>
+
+      <!-- AVISO DE PRIVACIDADE -->
+      <p
+        class="demo-notice"
+        style="background: none; border: 1px dashed rgba(73, 11, 12, 0.2);"
+      >
+        <span>ⓘ</span>
+        <strong>Privacidade:</strong>
+        os links cadastrados aqui servem de referência
+        para acompanhamento interno.
+      </p>
+
+      <!-- RODAPÉ -->
+      <footer class="page-footer">
+        <span>© {{ anoAtual }} Letícia Gomes Fotografia</span>
+        <span>Entrega rápida, organizada e afetiva.</span>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<!-- MODAL DE CADASTRO E EDIÇÃO -->
+<div
+  class="modal-backdrop"
+  [class.hidden]="!modalAberto"
+>
+  <section
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+  >
+
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">ACOMPANHAMENTO DO ENSAIO</p>
+        <h2 id="modalTitle">
+          {{ editando ? 'Editar trabalho' : 'Novo trabalho' }}
+        </h2>
+      </div>
+
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Fechar"
+        (click)="fecharModal()"
+      >
+        ×
+      </button>
+    </div>
+
+    <form (ngSubmit)="salvarTrabalho()">
+
+      <div class="form-grid">
+
+        <label class="full-width">
+          Nome do trabalho *
+          <input
+            type="text"
+            name="titulo"
+            required
+            maxlength="120"
+            placeholder="Ex.: Ensaio de aniversário da Mariana"
+            [(ngModel)]="formTrabalho.title"
+          >
+        </label>
+
+        <label>
+          Cliente
+          <select
+            name="cliente"
+            [(ngModel)]="formTrabalho.clientId"
+          >
+            <option value="">Selecionar cliente</option>
+
+            @for (cliente of clientes; track cliente.id) {
+              <option [value]="cliente.id">
+                {{ cliente.name }}
+              </option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Tipo de ensaio
+          <input
+            type="text"
+            name="tipo"
+            maxlength="80"
+            placeholder="Ex.: Retrato, Casamento, Família"
+            [(ngModel)]="formTrabalho.type"
+          >
+        </label>
+
+        <label>
+          Data do ensaio
+          <input
+            type="date"
+            name="data"
+            [(ngModel)]="formTrabalho.date"
+          >
+        </label>
+
+        <label>
+          Prazo de entrega
+          <input
+            type="date"
+            name="prazo"
+            [(ngModel)]="formTrabalho.deadline"
+          >
+        </label>
+
+        <label>
+          Status do trabalho *
+          <select
+            name="status"
+            required
+            [(ngModel)]="formTrabalho.status"
+          >
+            <option value="Produção">Em produção</option>
+            <option value="Edição">Em edição</option>
+            <option value="Revisão">Em revisão</option>
+            <option value="Pronta para entrega">Pronta para entrega</option>
+            <option value="Entregue">Entregue</option>
+          </select>
+        </label>
+
+        <label>
+          Data de envio
+          <input
+            type="date"
+            name="dataEnvio"
+            [(ngModel)]="formTrabalho.sentDate"
+          >
+        </label>
+
+        <label class="full-width">
+          Link privado de entrega
+          <input
+            type="url"
+            name="link"
+            placeholder="https://..."
+            [(ngModel)]="formTrabalho.link"
+          >
+        </label>
+
+        <label class="full-width">
+          Links de arquivos associados
+          <textarea
+            name="arquivos"
+            rows="2"
+            placeholder="Cole um link por linha (ex.: pasta RAW, seleção, contrato)"
+            [(ngModel)]="formTrabalho.files"
+          ></textarea>
+        </label>
+
+        <label class="full-width">
+          Observações internas
+          <textarea
+            name="observacoes"
+            rows="3"
+            placeholder="Anotações sobre edição, preferências da cliente, observações..."
+            [(ngModel)]="formTrabalho.notes"
+          ></textarea>
+        </label>
+
+        <label
+          class="full-width"
+          style="display: flex; flex-direction: row; align-items: center; gap: 10px;"
+        >
+          <input
+            type="checkbox"
+            name="confirmado"
+            style="width: auto;"
+            [(ngModel)]="formTrabalho.confirmed"
+          >
+          <span>Entrega confirmada pela cliente</span>
+        </label>
+
+      </div>
+
+      @if (erroFormulario) {
+        <p class="form-error" role="alert">
+          {{ erroFormulario }}
+        </p>
+      }
+
+      <div class="modal-actions">
+        <button
+          class="secondary-button"
+          type="button"
+          (click)="fecharModal()"
+        >
+          Cancelar
+        </button>
+
+        <button class="primary-button" type="submit">
+          Salvar trabalho
+        </button>
+      </div>
+
+    </form>
+  </section>
+</div>
+
+<!-- MODAL DE DETALHES -->
+<div
+  class="modal-backdrop"
+  [class.hidden]="!detalhesAbertos"
+>
+  <section
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detailTitle"
+  >
+
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">FICHA DO TRABALHO</p>
+        <h2 id="detailTitle">
+          {{ trabalhoSelecionado?.title || 'Detalhes da entrega' }}
+        </h2>
+      </div>
+
+      <button
+        class="close-button"
+        type="button"
+        aria-label="Fechar"
+        (click)="fecharDetalhes()"
+      >
+        ×
+      </button>
+    </div>
+
+    @if (trabalhoSelecionado) {
+      <div
+        style="margin-bottom: 25px; line-height: 1.6; color: #444;"
+      >
+        <p>
+          <strong>Cliente:</strong>
+          {{ trabalhoSelecionado.clientName || 'Sem cliente' }}
+        </p>
+
+        <p>
+          <strong>Tipo de Ensaio:</strong>
+          {{ trabalhoSelecionado.type || 'Não informado' }}
+        </p>
+
+        <p>
+          <strong>Data do Ensaio:</strong>
+          {{ formatarData(trabalhoSelecionado.date) }}
+        </p>
+
+        <p>
+          <strong>Prazo de Entrega:</strong>
+          {{ formatarData(trabalhoSelecionado.deadline) }}
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          {{ trabalhoSelecionado.status }}
+        </p>
+
+        <p>
+          <strong>Data de Envio:</strong>
+          {{ formatarData(trabalhoSelecionado.sentDate) }}
+        </p>
+
+        <p>
+          <strong>Link Privado:</strong>
+
+          @if (linkSeguro(trabalhoSelecionado.link); as link) {
+            <a
+              [href]="link"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-link"
+            >
+              {{ link }}
+            </a>
+          } @else {
+            Nenhum link cadastrado
+          }
+        </p>
+
+        <p>
+          <strong>Arquivos Associados:</strong>
+          {{ trabalhoSelecionado.files || 'Nenhum link adicional.' }}
+        </p>
+
+        <p>
+          <strong>Observações Internas:</strong>
+          {{ trabalhoSelecionado.notes || 'Nenhuma observação.' }}
+        </p>
+
+        <p>
+          <strong>Confirmação do Cliente:</strong>
+          {{
+            trabalhoSelecionado.confirmed
+              ? '✔ Entrega confirmada'
+              : 'Pendente de confirmação'
+          }}
+        </p>
+      </div>
+    }
+
+    <div
+      class="modal-actions"
+      style="justify-content: space-between;"
+    >
+      <button
+        class="secondary-button"
+        type="button"
+        style="color: #C62828; border-color: rgba(198, 40, 40, 0.3);"
+        (click)="excluirTrabalho()"
+      >
+        Excluir
+      </button>
+
+      <div style="display: flex; gap: 12px;">
+        <button
+          class="secondary-button"
+          type="button"
+          (click)="fecharDetalhes()"
+        >
+          Fechar
+        </button>
+
+        <button
+          class="primary-button"
+          type="button"
+          (click)="editarTrabalho()"
+        >
+          Editar trabalho
+        </button>
+      </div>
+    </div>
+
+  </section>
+</div>
