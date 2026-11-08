@@ -12,7 +12,7 @@ import { Financeiro } from './pages/financeiro/financeiro';
 import { Solicitacoes } from './pages/solicitacoes/solicitacoes';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'home', component: Home },
   { path: 'admin', component: Admin },
