@@ -43,7 +43,7 @@ export class Home {
     const mensagemCodificada = encodeURIComponent(texto);
 
     // Coloque aqui o mesmo número usado no seu JavaScript original
-    const numeroWhatsapp = 'SEU_NUMERO_AQUI';
+    const numeroWhatsapp = '1192125-7751';
 
     window.open(
       `https://wa.me/${numeroWhatsapp}?text=${mensagemCodificada}`,
